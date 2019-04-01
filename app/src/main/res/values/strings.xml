@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">jToDoLister</string>
+    <string name="app_name">jToDo</string>
+    <string name="fab_add">Note</string>
+    <string name="fab_add_long">Long Note</string>
+    <string name="fab_add_pic">Image Note</string>
+    <string name="fab_add_loc">Location Note</string>
+    <string name="fab_add_time">Time Note</string>
+    <string name="settings">Settings</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="about">About</string>
+    <string name="share">Share</string>
 </resources>
