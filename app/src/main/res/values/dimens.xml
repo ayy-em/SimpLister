@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="standard_55">55dp</dimen>
+    <dimen name="standard_105">105dp</dimen>
+    <dimen name="standard_155">155dp</dimen>
+    <dimen name="standard_205">205dp</dimen>
+    <dimen name="standard_255">255dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>
