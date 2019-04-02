@@ -8,5 +8,10 @@
     <string name="settings">Settings</string>
     <string name="night_mode">Night Mode</string>
     <string name="about">About</string>
+    <string name="goToWeb">Go to website</string>
+    <string name="mailMe">E-mail me</string>
     <string name="share">Share</string>
+    <string name="share_text">Check out jToDo, a cool app i found on Play Store!</string>
+    <string name="about_jtodo">jToDo is a simple to-do list application written for Android using Java. It\'s completely free and open source. You can download the source code at https://github.com/ayy-em/jToDo and contribute
+    to the project by adding new features or reporting bugs. Contact me at mironov-hse@yandex.ru or jm-ams.nl for whatever it is you want to contact me.</string>
 </resources>

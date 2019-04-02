@@ -1,12 +1,15 @@
 package com.example.jtodolister;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab,fab_add,fab_long,fab_pic,fab_loc,fab_time;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     public Boolean isNightModeChecked = false;
+    private ShareActionProvider shareActionProvider;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
+
+        //SHARE button
+        MenuItem item_share = menu.findItem(R.id.action_share);
+        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item_share);
+        Intent shareButtonIntent = new Intent(Intent.ACTION_SEND);
+        shareButtonIntent.setType("message/rfc822");
+        shareButtonIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_text));
+        shareActionProvider.setShareIntent(shareButtonIntent);
+
+        MenuItem item_about = menu.findItem(R.id.about_menu);
+        item_about.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                MainActivity.this.goToAbout(item);
+                return false;
+            }
+        });
         return true;
 
     }
@@ -53,27 +75,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int id = v.getId();
         switch (id){
             case R.id.fab:
-
                 animateFAB();
                 break;
             case R.id.fab_action_add:
-
                 Log.d("XXX", "Fab add");
                 break;
             case R.id.fab_action_add_long:
-
                 Log.d("XXX", "Fab long");
                 break;
             case R.id.fab_action_add_loc:
-
                 Log.d("XXX", "Fab loc");
                 break;
             case R.id.fab_action_add_pic:
-
                 Log.d("XXX", "Fab pic");
                 break;
             case R.id.fab_action_add_time:
-
                 Log.d("XXX", "Fab time");
                 break;
         }
@@ -81,11 +97,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void goToSettings(MenuItem item){
         //TODO: intent to settings page
+        //if fab is open, close it before going to about
+        if (isFabOpen) {
+            findViewById(R.id.fab).callOnClick();
+        }
         Log.d("XXX","Going to settings");
     }
 
     public void goToAbout(MenuItem item) {
-        //TODO: intent to about page
+        //if fab is open, close it before going to about
+        if (isFabOpen) {
+            findViewById(R.id.fab).callOnClick();
+        }
+        Intent aboutIntent = new Intent(this,AboutScreen.class);
+        startActivity(aboutIntent);
         Log.d("XXX","Going to about");
     }
 
@@ -104,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //----------------------FAB STUFF------------------------------
     //-------------------------------------------------------------
     private void getNiceFloatingActionButton() {
+        //TODO: FAB horizontal on rotation
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab_add = (FloatingActionButton) findViewById(R.id.fab_action_add);
         fab_long = (FloatingActionButton) findViewById(R.id.fab_action_add_long);
@@ -153,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("XXX","open");
         }
     }
-
     //-------------------------------------------------------------
     //----------------------FAB STUFF------------------------------
 
