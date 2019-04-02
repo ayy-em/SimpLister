@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +32,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab,fab_add,fab_long,fab_pic,fab_loc,fab_time;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     public Boolean isNightModeChecked = false;
-    private ShareActionProvider shareActionProvider;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ViewGroup fragData;
+    private TextView literallyNothingAdded;
+
+    private static int fragCount = 0;
 
 
     @Override
@@ -38,26 +47,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Toolbar
         Toolbar main_toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(main_toolbar);
-        //TODO: landscape icons for settings
 
+        //my beautiful expanding FAB
         getNiceFloatingActionButton();
 
     }
 
+    public static int getFragCount() {
+        return fragCount;
+    }
+
+    //-------------------------------------------------------------
+    //------------------TOOLBAR/MENU STUFF-------------------------
+    //TODO: landscape mode settings (icons)
+    //TODO: toolbar height dynamically changes
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
 
-        //SHARE button
+        //SHARE button - if it doesn't work, convert SAP to class variables
         MenuItem item_share = menu.findItem(R.id.action_share);
-        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item_share);
+        ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item_share);
         Intent shareButtonIntent = new Intent(Intent.ACTION_SEND);
         shareButtonIntent.setType("message/rfc822");
         shareButtonIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_text));
         shareActionProvider.setShareIntent(shareButtonIntent);
 
+        //ABOUT button in the menu
         MenuItem item_about = menu.findItem(R.id.about_menu);
         item_about.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -67,32 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         return true;
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id){
-            case R.id.fab:
-                animateFAB();
-                break;
-            case R.id.fab_action_add:
-                Log.d("XXX", "Fab add");
-                break;
-            case R.id.fab_action_add_long:
-                Log.d("XXX", "Fab long");
-                break;
-            case R.id.fab_action_add_loc:
-                Log.d("XXX", "Fab loc");
-                break;
-            case R.id.fab_action_add_pic:
-                Log.d("XXX", "Fab pic");
-                break;
-            case R.id.fab_action_add_time:
-                Log.d("XXX", "Fab time");
-                break;
-        }
+        //settings and night mode below
     }
 
     public void goToSettings(MenuItem item){
@@ -109,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (isFabOpen) {
             findViewById(R.id.fab).callOnClick();
         }
+        //go to about (class: AboutScreen, layout about_screen.xml (port/land separately)
         Intent aboutIntent = new Intent(this,AboutScreen.class);
         startActivity(aboutIntent);
         Log.d("XXX","Going to about");
@@ -116,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void toggleNightMode(MenuItem item){
         //TODO: Night mode
+        //check if night mode is on/off and toggle to a different position
         if (isNightModeChecked) {
             item.setChecked(false);
             isNightModeChecked = false;
@@ -126,10 +122,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("XXX","turning night mode on");
         }
     }
-    //----------------------FAB STUFF------------------------------
+    //------------------TOOLBAR/MENU STUFF-------------------------
     //-------------------------------------------------------------
+
+
+    //-------------------------------------------------------------
+    //----------------FRAGMENT-RELATED STUFF-----------------------
+
+    private void addSimpleFragment() {
+        fragCount++;
+        FragmentTransaction ft_add_simple = getSupportFragmentManager().beginTransaction();
+        ft_add_simple.add(R.id.content_main,SimpleAddFragment.newInstance("This is a placeholder text for a simple text item added",getFragCount()));
+        ft_add_simple.commit();
+    }
+
+    private void addLongFragment() {
+        fragCount++;
+        FragmentTransaction ft_add_long = getSupportFragmentManager().beginTransaction();
+        ft_add_long.add(R.id.content_main,LongAddFragment.newInstance("This is a title","This is a sample content text for long item added",getFragCount()));
+        ft_add_long.commit();
+    }
+
+
+    //----------------FRAGMENT-RELATED STUFF-----------------------
+    //-------------------------------------------------------------
+
+    //-------------------------------------------------------------
+    //----------------------FAB STUFF------------------------------
+
     private void getNiceFloatingActionButton() {
         //TODO: FAB horizontal on rotation
+        //fabs for add/long/loc/pic/time are invisible and unclickable if (!isFabOpen)
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab_add = (FloatingActionButton) findViewById(R.id.fab_action_add);
         fab_long = (FloatingActionButton) findViewById(R.id.fab_action_add_long);
@@ -148,8 +171,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab_time.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        //action based on button pressed
+        //initial fab press - first case, expands/hides the speed dial
+        switch (id){
+            case R.id.fab:
+                animateFAB();
+                break;
+            case R.id.fab_action_add:
+                //TODO: placeholder - should open dialog instead of adding
+                addSimpleFragment();
+                animateFAB();
+                break;
+            case R.id.fab_action_add_long:
+                addLongFragment();
+                Log.d("XXX", "Fab long");
+                break;
+            case R.id.fab_action_add_loc:
+                Log.d("XXX", "Fab loc");
+                break;
+            case R.id.fab_action_add_pic:
+                Log.d("XXX", "Fab pic");
+                break;
+            case R.id.fab_action_add_time:
+                Log.d("XXX", "Fab time");
+                break;
+        }
+    }
+
     public void animateFAB(){
         if(isFabOpen){
+            //then close it animations, set unclickable
             fab.startAnimation(rotate_backward);
             fab_add.startAnimation(fab_close);
             fab_long.startAnimation(fab_close);
@@ -164,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             isFabOpen = false;
             Log.d("XXX", "close");
         } else {
+            //open it animations, set clickable
             fab.startAnimation(rotate_forward);
             fab_add.startAnimation(fab_open);
             fab_long.startAnimation(fab_open);
@@ -179,44 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("XXX","open");
         }
     }
-    //-------------------------------------------------------------
     //----------------------FAB STUFF------------------------------
-
-    private static class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-        private final LayoutInflater myInflater;
-        private final ArrayList myData;
-
-        public ListAdapter(final Context context,final ArrayList data) {
-            myInflater = LayoutInflater.from(context);
-            myData = data;
-        }
-
-        @NonNull
-        @Override
-        public ListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-            final View view = myInflater.inflate(android.R.layout.simple_list_item_2, viewGroup,false);
-            return new ViewHolder(view);
-
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.textView.setText(myData.get(position).toString());
-        }
-
-        @Override
-        public int getItemCount() {
-            return myData.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-
-            public TextView textView;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                textView = (TextView) itemView.findViewById(android.R.id.text1);
-            }
-        }
-    }
+    //-------------------------------------------------------------
 }
+

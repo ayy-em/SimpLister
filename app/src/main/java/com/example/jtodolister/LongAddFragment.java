@@ -1,0 +1,54 @@
+package com.example.jtodolister;
+
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+public class LongAddFragment extends Fragment {
+
+    public static final String fragStringContentKey = "LONG_STR_KEY";
+    public static final String fragStringTitleKey = "LONG_STR_KEY";
+    public static final String fragIntKey = "LONG_NUMBER_KEY";
+    private TextView tvTitle;
+    private TextView tvContent;
+
+
+    public static LongAddFragment newInstance(String strTitle, String strContent, int fragNumber) {
+
+        final LongAddFragment fragment = new LongAddFragment();
+
+        //create a bundle with fragment text and number
+        final Bundle params = new Bundle();
+        params.putString(fragStringTitleKey,strTitle);
+        params.putString(fragStringContentKey,strContent);
+        params.putInt(fragIntKey,fragNumber);
+        fragment.setArguments(params);
+        return fragment;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fraglayout_add_long,container,false);
+
+        //what was initially there
+        //return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //set user's text to that fragment
+        tvTitle = (TextView) view.findViewById(R.id.titleLongTextView);
+        tvContent = (TextView) view.findViewById(R.id.contentLongTextView);
+        Bundle params = getArguments();
+        tvTitle.setText(params.getString(fragStringTitleKey));
+        tvContent.setText(params.getString(fragStringContentKey));
+    }
+}

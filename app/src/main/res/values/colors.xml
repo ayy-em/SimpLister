@@ -2,7 +2,11 @@
 <resources>
     <color name="colorPrimary">#6C3483</color>
     <color name="colorPrimaryDark">#5B2C6F</color>
+    <color name="colorPrimarySuperLight">#D2B4DE</color>
     <color name="colorLight">#A3E4D7</color>
     <color name="colorAccent">#28B463</color>
     <color name="darkText">#273746</color>
+    <color name="defaultText">#808080</color>
+    <color name="fragmentBackground">#EAECEE</color>
+    <color name="fragmentBackgroundBorder">#F2F1F2</color>
 </resources>

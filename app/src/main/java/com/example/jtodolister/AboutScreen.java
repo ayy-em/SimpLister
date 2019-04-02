@@ -27,7 +27,7 @@ public class AboutScreen extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"mironov-hse@yandex.ru"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "jToDo");
+        i.putExtra(Intent.EXTRA_SUBJECT, R.string.app_name);
         i.putExtra(Intent.EXTRA_TEXT   , "Hey there!");
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
