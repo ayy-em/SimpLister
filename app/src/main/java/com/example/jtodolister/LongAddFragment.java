@@ -44,6 +44,21 @@ public class LongAddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        view.setOnTouchListener(new OnSwipeTouchListener(view.getContext()) {
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+            }
+
+
+            @Override
+            public void onSwipeRight() {
+                //TODO: confirm, sweet animations
+                getFragmentManager().beginTransaction().remove(LongAddFragment.this).commit();
+                super.onSwipeRight();
+            }
+        });
+
         //set user's text to that fragment
         tvTitle = (TextView) view.findViewById(R.id.titleLongTextView);
         tvContent = (TextView) view.findViewById(R.id.contentLongTextView);

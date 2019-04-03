@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class SimpleAddFragment extends Fragment {
+public class SimpleAddFragment extends Fragment  {
 
     public static final String fragStringKey = "SAF_STR_KEY";
     public static final String fragIntKey = "SAF_NUMBER_KEY";
@@ -38,8 +40,24 @@ public class SimpleAddFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //swipe ontouch to delete it from main screen
+        view.setOnTouchListener(new OnSwipeTouchListener(view.getContext()) {
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+            }
+
+
+        @Override
+        public void onSwipeRight() {
+                //TODO: confirm, sweet animations
+            getFragmentManager().beginTransaction().remove(SimpleAddFragment.this).commit();
+            super.onSwipeRight();
+        }
+    });
 
         //set user's text to that fragment
         tv = (TextView) view.findViewById(R.id.safTextView);

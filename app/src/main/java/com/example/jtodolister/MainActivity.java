@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +21,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab,fab_add,fab_long,fab_pic,fab_loc,fab_time;
@@ -37,13 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView.LayoutManager layoutManager;
     private ViewGroup fragData;
     private TextView literallyNothingAdded;
+    private static FragmentTransaction ft_general;
 
     private static int fragCount = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -53,11 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //my beautiful expanding FAB
         getNiceFloatingActionButton();
-
-    }
-
-    public static int getFragCount() {
-        return fragCount;
     }
 
     //-------------------------------------------------------------
@@ -98,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("XXX","Going to settings");
     }
 
+
     public void goToAbout(MenuItem item) {
         //if fab is open, close it before going to about
         if (isFabOpen) {
@@ -129,20 +129,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //-------------------------------------------------------------
     //----------------FRAGMENT-RELATED STUFF-----------------------
 
-    private void addSimpleFragment() {
+    private void addSimpleFragment(String str) {
         fragCount++;
         FragmentTransaction ft_add_simple = getSupportFragmentManager().beginTransaction();
-        ft_add_simple.add(R.id.content_main,SimpleAddFragment.newInstance("This is a placeholder text for a simple text item added",getFragCount()));
+        ft_add_simple.add(R.id.content_main,SimpleAddFragment.newInstance(str,getFragCount()));
         ft_add_simple.commit();
     }
 
-    private void addLongFragment() {
+    private void addLongFragment(String title, String content) {
         fragCount++;
         FragmentTransaction ft_add_long = getSupportFragmentManager().beginTransaction();
-        ft_add_long.add(R.id.content_main,LongAddFragment.newInstance("This is a title","This is a sample content text for long item added",getFragCount()));
+        ft_add_long.add(R.id.content_main,LongAddFragment.newInstance(title,content,getFragCount()));
         ft_add_long.commit();
     }
-
 
     //----------------FRAGMENT-RELATED STUFF-----------------------
     //-------------------------------------------------------------
@@ -178,15 +177,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //initial fab press - first case, expands/hides the speed dial
         switch (id){
             case R.id.fab:
-                animateFAB();
+                //if edit_text is not empty, create a simplefragment and add it to layout
+                if (!editTextMainEmpty()) {
+                    addSimpleFragment(getMainEditTextStringAndClearIt());
+                    hideKeyBoardLoseFocus(v);
+                } else {
+                    animateFAB();
+                }
                 break;
             case R.id.fab_action_add:
                 //TODO: placeholder - should open dialog instead of adding
-                addSimpleFragment();
+                addSimpleFragment("Hello! This is a test fragment");
                 animateFAB();
                 break;
             case R.id.fab_action_add_long:
-                addLongFragment();
+                addLongFragment("Hey there! Test title here","Well, this is some content for you");
                 Log.d("XXX", "Fab long");
                 break;
             case R.id.fab_action_add_loc:
@@ -235,6 +240,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     //----------------------FAB STUFF------------------------------
+    //-------------------------------------------------------------
+
+    //-------------------------------------------------------------
+    //------------------------UTILITY------------------------------
+
+    public static int getFragCount() {
+        return fragCount;
+    }
+
+    private boolean editTextMainEmpty() {
+        EditText editTextMain = (EditText) findViewById(R.id.entryEditTextMain);
+        return editTextMain.getText().toString().matches("");
+    }
+
+    private String getMainEditTextStringAndClearIt() {
+        EditText editTextMain = (EditText) findViewById(R.id.entryEditTextMain);
+        String text = editTextMain.getText().toString().trim();
+        editTextMain.setText("");
+        return text;
+
+    }
+
+    private void hideKeyBoardLoseFocus(View v) {
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    //------------------------UTILITY------------------------------
     //-------------------------------------------------------------
 }
 

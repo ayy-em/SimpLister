@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimarySuperLight"
         android:minHeight="?attr/actionBarSize"
+        android:focusableInTouchMode="true"
         app:title="@string/app_name" />
 
     <include layout="@layout/content_main"
@@ -94,5 +95,23 @@
         app:pressedTranslationZ="12dp"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/baseline_add_black_36" />
+
+    <EditText
+        android:id="@+id/entryEditTextMain"
+        android:layout_width="360dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/layout_rounded_corners_for_main_edit_text"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:elevation="5dp"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="textShortMessage|textAutoCorrect"
+        android:hint="@string/typeHere"
+        android:importantForAutofill="no"
+        tools:ignore="UnusedAttribute" />
 
 </android.support.design.widget.CoordinatorLayout>
