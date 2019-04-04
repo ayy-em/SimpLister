@@ -53,8 +53,10 @@ public class SimpleAddFragment extends Fragment  {
 
         @Override
         public void onSwipeRight() {
-                //TODO: confirm, sweet animations
-            getFragmentManager().beginTransaction().remove(SimpleAddFragment.this).commit();
+                //TODO: confirm
+            getFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_out_right,R.anim.slide_in_left)
+                    .remove(SimpleAddFragment.this).commit();
             super.onSwipeRight();
         }
     });

@@ -13,7 +13,10 @@
     <string name="expand">Expand this</string>
     <string name="typeHere">Type here</string>
     <string name="share">Share</string>
-    <string name="nothing_here">Nothing added yet… How about you add something?</string>
+    <string name="note_added">Note added!</string>
+    <string name="addSimpDialTitle">Add a short note</string>
+    <string name="addLongDialTitle">Add a long note</string>
+    <string name="nothing_here">Nothing added yet…"\n"How about you add something?</string>
     <string name="share_text">Check out jToDo, a cool app i found on Play Store!</string>
     <string name="about_jtodo">jToDo is a simple to-do list application written for Android using Java. It\'s completely free and open source. You can download the source code at https://github.com/ayy-em/jToDo and contribute
     to the project by adding new features or reporting bugs. Contact me at mironov-hse@yandex.ru or jm-ams.nl for whatever it is you want to contact me.</string>

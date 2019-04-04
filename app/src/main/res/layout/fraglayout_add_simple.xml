@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="64dp"
@@ -24,6 +25,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
         android:layout_weight="0.9"
-        android:text="TEST TEST TEST TEST TEST" />
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="TEST TEST TEST TEST TEST"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

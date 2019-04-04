@@ -1,7 +1,9 @@
 package com.example.jtodolister;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -16,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,8 +28,12 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -42,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ViewGroup fragData;
     private TextView literallyNothingAdded;
     private static FragmentTransaction ft_general;
-
+    //TODO: edit text focus listener to deflate FAB
     private static int fragCount = 0;
 
 
@@ -57,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //my beautiful expanding FAB
         getNiceFloatingActionButton();
+
+        //nothing text gone if fragment placed
+        literallyNothingAdded = (TextView) findViewById(R.id.nothing_here_textview);
     }
 
     //-------------------------------------------------------------
@@ -129,8 +139,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //-------------------------------------------------------------
     //----------------FRAGMENT-RELATED STUFF-----------------------
 
+    private void removeNothingIfItsPresent() {
+        if (literallyNothingAdded.getVisibility() != View.GONE) {
+            literallyNothingAdded.setVisibility(View.GONE);
+        }
+    }
+
     private void addSimpleFragment(String str) {
         fragCount++;
+        removeNothingIfItsPresent();
         FragmentTransaction ft_add_simple = getSupportFragmentManager().beginTransaction();
         ft_add_simple.add(R.id.content_main,SimpleAddFragment.newInstance(str,getFragCount()));
         ft_add_simple.commit();
@@ -138,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addLongFragment(String title, String content) {
         fragCount++;
+        removeNothingIfItsPresent();
         FragmentTransaction ft_add_long = getSupportFragmentManager().beginTransaction();
         ft_add_long.add(R.id.content_main,LongAddFragment.newInstance(title,content,getFragCount()));
         ft_add_long.commit();
@@ -186,13 +204,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.fab_action_add:
-                //TODO: placeholder - should open dialog instead of adding
-                addSimpleFragment("Hello! This is a test fragment");
                 animateFAB();
+                SADinit();
                 break;
             case R.id.fab_action_add_long:
-                addLongFragment("Hey there! Test title here","Well, this is some content for you");
-                Log.d("XXX", "Fab long");
+                animateFAB();
+                LADinit();
                 break;
             case R.id.fab_action_add_loc:
                 Log.d("XXX", "Fab loc");
@@ -208,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void animateFAB(){
         if(isFabOpen){
-            //then close it animations, set unclickable
+            //then close animations, set unclickable
             fab.startAnimation(rotate_backward);
             fab_add.startAnimation(fab_close);
             fab_long.startAnimation(fab_close);
@@ -223,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             isFabOpen = false;
             Log.d("XXX", "close");
         } else {
-            //open it animations, set clickable
+            //open animations, set clickable
             fab.startAnimation(rotate_forward);
             fab_add.startAnimation(fab_open);
             fab_long.startAnimation(fab_open);
@@ -271,5 +288,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     //------------------------UTILITY------------------------------
     //-------------------------------------------------------------
+
+    //-------------------------------------------------------------
+    //------------------------DIALOG------------------------------
+
+    private void SADinit() {
+        //show dialog with custom layout
+        AlertDialog.Builder xBuilder = new AlertDialog.Builder(MainActivity.this);
+        View xView = getLayoutInflater().inflate(R.layout.dialog_add_simple,null);
+        final EditText dasET = xView.findViewById(R.id.das_editText);
+        xBuilder.setView(xView);
+        final AlertDialog dialog = xBuilder.create();
+
+        //----YES BUTTON----
+        xView.findViewById(R.id.das_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: what happens if the field is empty
+                Toast.makeText(MainActivity.this,getString(R.string.note_added),Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                addSimpleFragment(dasET.getText().toString().trim());
+            }
+        });
+        //----NO BUTTON----
+        xView.findViewById(R.id.das_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+    private void LADinit() {
+        //show dialog with custom layout
+        AlertDialog.Builder xBuilder = new AlertDialog.Builder(MainActivity.this);
+        View xView = getLayoutInflater().inflate(R.layout.dialog_add_long,null);
+        final EditText dalTitle = xView.findViewById(R.id.dal_editText_title);
+        final EditText dalContent = xView.findViewById(R.id.dal_editText_content);
+        xBuilder.setView(xView);
+        final AlertDialog dialog = xBuilder.create();
+
+        //----YES BUTTON----
+        xView.findViewById(R.id.dal_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: what happens if the field is empty
+                Toast.makeText(MainActivity.this,getString(R.string.note_added),Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                addLongFragment(dalTitle.getText().toString().trim(),dalContent.getText().toString().trim());
+            }
+        });
+        //----NO BUTTON----
+        xView.findViewById(R.id.dal_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
 }
 

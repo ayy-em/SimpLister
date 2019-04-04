@@ -14,7 +14,7 @@
         android:layout_width="36dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@null"
@@ -34,9 +34,13 @@
         android:gravity="start|center_horizontal"
         android:text="TextView"
         android:textStyle="bold"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/contentLongTextView"
         app:layout_constraintStart_toEndOf="@+id/addLongButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/contentLongTextView"
@@ -45,8 +49,12 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:layout_weight="0.9"
         android:text="TEST TEST TEST TEST TEST"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addLongButton" />
+        app:layout_constraintStart_toEndOf="@+id/addLongButton"
+        tools:ignore="HardcodedText" />
 </android.support.constraint.ConstraintLayout>
