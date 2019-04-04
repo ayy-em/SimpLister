@@ -1,5 +1,6 @@
 package com.example.jtodolister;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ public class SimpleAddFragment extends Fragment  {
     public static final String fragStringKey = "SAF_STR_KEY";
     public static final String fragIntKey = "SAF_NUMBER_KEY";
     private TextView tv;
+    private ImageButton safShareButton;
 
 
     public static SimpleAddFragment newInstance(String str, int fragNumber) {
@@ -65,5 +68,16 @@ public class SimpleAddFragment extends Fragment  {
         tv = (TextView) view.findViewById(R.id.safTextView);
         Bundle params = getArguments();
         tv.setText(params.getString(fragStringKey));
+
+        safShareButton = (ImageButton) view.findViewById(R.id.safShare);
+        safShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tv.getText().toString().trim());
+                startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)));
+            }
+        });
     }
 }

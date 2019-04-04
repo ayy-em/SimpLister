@@ -1,5 +1,6 @@
 package com.example.jtodolister;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class LongAddFragment extends Fragment {
@@ -17,6 +19,7 @@ public class LongAddFragment extends Fragment {
     public static final String fragIntKey = "LONG_NUMBER_KEY";
     private TextView tvTitle;
     private TextView tvContent;
+    private ImageButton longShareButton;
 
 
     public static LongAddFragment newInstance(String strTitle, String strContent, int fragNumber) {
@@ -65,5 +68,17 @@ public class LongAddFragment extends Fragment {
         Bundle params = getArguments();
         tvTitle.setText(params.getString(fragStringTitleKey));
         tvContent.setText(params.getString(fragStringContentKey));
+
+        longShareButton = (ImageButton) view.findViewById(R.id.shareLong);
+        longShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, tvTitle.getText().toString().trim());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tvContent.getText().toString().trim());
+                startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)));
+            }
+        });
     }
 }

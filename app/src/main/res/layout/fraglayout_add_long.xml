@@ -52,9 +52,26 @@
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:layout_weight="0.9"
         android:text="TEST TEST TEST TEST TEST"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/addLongButton"
         tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/shareLong"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="0.1"
+        android:background="@null"
+        android:contentDescription="@string/share"
+        android:tint="@color/colorPrimarySuperLight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_share_black_36" />
+
 </android.support.constraint.ConstraintLayout>

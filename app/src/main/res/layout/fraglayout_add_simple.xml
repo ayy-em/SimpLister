@@ -26,10 +26,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
-        android:layout_weight="0.9"
+        android:layout_weight="0.8"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="TEST TEST TEST TEST TEST"
         android:textSize="16sp"
         tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/safShare"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:layout_weight="0.1"
+        android:background="@null"
+        app:srcCompat="@drawable/baseline_share_black_36"
+        android:tint="@color/colorPrimarySuperLight"
+        android:contentDescription="@string/share" />
 </LinearLayout>
