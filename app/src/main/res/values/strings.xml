@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">jToDo</string>
+    <string name="app_name">SimpLister</string>
     <string name="fab_add">Note</string>
     <string name="fab_add_long">Long Note</string>
     <string name="fab_add_pic">Image Note</string>
@@ -9,6 +9,7 @@
     <string name="night_mode">Night Mode</string>
     <string name="about">About</string>
     <string name="goToWeb">Go to website</string>
+    <string name="goToGithub">Go to Github</string>
     <string name="mailMe">E-mail me</string>
     <string name="expand">Expand this</string>
     <string name="typeHere">Type here</string>
@@ -17,7 +18,7 @@
     <string name="addSimpDialTitle">Add a short note</string>
     <string name="addLongDialTitle">Add a long note</string>
     <string name="nothing_here">Nothing added yet…"\n"How about you add something?</string>
-    <string name="share_text">Check out jToDo, a cool app i found on Play Store!</string>
-    <string name="about_jtodo">jToDo is a simple to-do list application written for Android using Java. It\'s completely free and open source. You can download the source code at https://github.com/ayy-em/jToDo and contribute
-    to the project by adding new features or reporting bugs. Contact me at mironov-hse@yandex.ru or jm-ams.nl for whatever it is you want to contact me.</string>
+    <string name="share_text">Check out SimpLister, a cool app i found on Play Store!</string>
+    <string name="about_jtodo">SimpLister is a simple to-do list application written for Android using Java. It\'s completely free and open source. You can download the source code using the GitHub button below and contribute
+    to the project by adding new features or reporting bugs.\n \nContact me at mironov-hse@yandex.ru or visit jm-ams.nl to tell me whatever it is you think.</string>
 </resources>

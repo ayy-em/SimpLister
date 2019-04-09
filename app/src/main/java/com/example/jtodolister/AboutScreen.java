@@ -13,6 +13,7 @@ import static com.example.jtodolister.R.layout.about_screen;
 public class AboutScreen extends AppCompatActivity {
 
     private final static String website = "https://jm-ams.nl";
+    private final static String github_link = "https://github.com/ayy-em/jToDo";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,12 @@ public class AboutScreen extends AppCompatActivity {
     public void goToWeb(View view){
         //onClick for website button in about
         Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+        startActivity(websiteIntent);
+    }
+
+    public void goToGithub(View view){
+        //onClick for GitHub button in about
+        Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(github_link));
         startActivity(websiteIntent);
     }
 }

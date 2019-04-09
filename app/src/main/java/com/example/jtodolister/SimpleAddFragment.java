@@ -33,6 +33,15 @@ public class SimpleAddFragment extends Fragment  {
         return fragment;
     }
 
+    public void expandThis() {
+        //TODO: animate this
+        final Bundle params = new Bundle();
+        params.putString(fragStringKey,tv.getText().toString().trim());
+        params.putInt(fragIntKey,getArguments().getInt(fragIntKey));
+
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
