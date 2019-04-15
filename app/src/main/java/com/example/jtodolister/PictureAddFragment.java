@@ -1,88 +1,90 @@
 package com.example.jtodolister;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class SimpleAddFragment extends Fragment  {
+public class PictureAddFragment extends Fragment {
 
-    public static final String fragStringKey = "SAF_STR_KEY";
-    public static final String fragIntKey = "SAF_NUMBER_KEY";
-    private TextView tv;
-    private ImageButton safShareButton;
+    public static final String fragStringKey = "PAF_STR_KEY";
+    public static final String fragPathKey = "PAF_PATH_KEY";
+    public static final String fragIntKey = "PAF_INT_KEY";
+    private ImageView imageForFragment;
+    private TextView textForFragment;
+    private ImageButton pafShareButton;
 
+    public static PictureAddFragment newInstance(String imagePath, String text, int fragNumber) {
 
-    public static SimpleAddFragment newInstance(String str, int fragNumber) {
-
-        final SimpleAddFragment fragment = new SimpleAddFragment();
+        //TODO: clicking an image enlarges it
+        final PictureAddFragment fragment = new PictureAddFragment();
 
         //create a bundle with fragment text and number
         final Bundle params = new Bundle();
-        params.putString(fragStringKey,str);
+        params.putString(fragStringKey,text);
         params.putInt(fragIntKey,fragNumber);
+        params.putString(fragPathKey,imagePath);
         fragment.setArguments(params);
         return fragment;
-    }
-
-    public void expandThis() {
-        //TODO: animate this - doesn't work, like, at all
-        final Bundle params = new Bundle();
-        params.putString(fragStringKey,tv.getText().toString().trim());
-        params.putInt(fragIntKey,getArguments().getInt(fragIntKey));
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fraglayout_add_simple,container,false);
+        return inflater.inflate(R.layout.fraglayout_add_pic,container,false);
 
         //what was initially there
         //return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         //swipe ontouch to delete it from main screen
         view.setOnTouchListener(new OnSwipeTouchListener(view.getContext()) {
             @Override
             public void onSwipeLeft() {
+                //literally nothing happens
                 super.onSwipeLeft();
             }
 
             @Override
             public void onSwipeRight() {
-                    //TODO: confirm
+                //TODO: confirm if not empty
                 getFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.slide_out_right,R.anim.slide_in_left)
-                        .remove(SimpleAddFragment.this).commit();
+                        .remove(PictureAddFragment.this).commit();
                 super.onSwipeRight();
             }
-    });
+        });
 
         //set user's text to that fragment
-        tv = (TextView) view.findViewById(R.id.safTextView);
+        textForFragment = (TextView) view.findViewById(R.id.pafTextView);
         Bundle params = getArguments();
-        tv.setText(params.getString(fragStringKey));
+        textForFragment.setText(params.getString(fragStringKey));
+
+        //and set the pic to what the user chose
+        imageForFragment = (ImageView) view.findViewById(R.id.pafPic);
+        imageForFragment.setImageBitmap(BitmapFactory.decodeFile(params.getString(fragPathKey)));
 
         //share button stuff
-        safShareButton = (ImageButton) view.findViewById(R.id.safShare);
-        safShareButton.setOnClickListener(new View.OnClickListener() {
+        //TODO: shares not only text, but the image as well
+        pafShareButton = (ImageButton) view.findViewById(R.id.pafShare);
+        pafShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tv.getText().toString().trim());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, textForFragment.getText().toString().trim());
                 startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)));
             }
         });

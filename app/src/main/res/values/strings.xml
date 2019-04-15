@@ -11,12 +11,15 @@
     <string name="goToWeb">Go to website</string>
     <string name="goToGithub">Go to Github</string>
     <string name="mailMe">E-mail me</string>
+    <string name="uploadPic">Upload a picture</string>
     <string name="expand">Expand this</string>
     <string name="typeHere">Type here</string>
     <string name="share">Share</string>
     <string name="note_added">Note added!</string>
     <string name="addSimpDialTitle">Add a short note</string>
     <string name="addLongDialTitle">Add a long note</string>
+    <string name="addPicDialTitle">Add an image note</string>
+    <string name="selectPic">Choose an image for your note</string>
     <string name="nothing_here">Nothing added yet…"\n"How about you add something?</string>
     <string name="share_text">Check out SimpLister, a cool app i found on Play Store!</string>
     <string name="about_jtodo">SimpLister is a simple to-do list application written for Android using Java. It\'s completely free and open source. You can download the source code using the GitHub button below and contribute

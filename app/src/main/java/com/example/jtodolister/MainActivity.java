@@ -1,13 +1,24 @@
 package com.example.jtodolister;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -35,10 +46,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    //region Variable declarations
     private Boolean isFabOpen = false;
     private FloatingActionButton fab,fab_add,fab_long,fab_pic,fab_loc,fab_time;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
@@ -51,11 +65,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static FragmentTransaction ft_general;
     //TODO: edit text focus listener to deflate FAB
     private static int fragCount = 0;
+    public static final int STORAGE_CAMERA_PERMISSIONS = 456;
+    public static final int PICK_IMAGE_FROM_STORAGE = 345;
+    ImageButton dapImageButton;
+    private String imageChosenPath;
+    final String[] cameraStorageRWPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    //endregion
 
-
+    //region onCreate - find views, assign them, etc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+        //TODO: change theme in manifest to android:theme="@style/splashScreenTheme"
+        //TODO: and uncomment next line to get splash screen
+        //setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -69,7 +91,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //nothing text gone if fragment placed
         literallyNothingAdded = (TextView) findViewById(R.id.nothing_here_textview);
     }
+    //endregion
 
+    //region Toolbar-related stuff
     //-------------------------------------------------------------
     //------------------TOOLBAR/MENU STUFF-------------------------
     //TODO: landscape mode settings (icons)
@@ -100,12 +124,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goToSettings(MenuItem item){
-        //TODO: intent to settings page
+        //TODO: intent to settings page + settings page
         //if fab is open, close it before going to about
         if (isFabOpen) {
             findViewById(R.id.fab).callOnClick();
         }
-        Log.d("XXX","Going to settings");
     }
 
 
@@ -117,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //go to about (class: AboutScreen, layout about_screen.xml (port/land separately)
         Intent aboutIntent = new Intent(this,AboutScreen.class);
         startActivity(aboutIntent);
-        Log.d("XXX","Going to about");
     }
 
     public void toggleNightMode(MenuItem item){
@@ -126,20 +148,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (isNightModeChecked) {
             item.setChecked(false);
             isNightModeChecked = false;
-            Log.d("XXX","turning night mode off");
         } else {
             item.setChecked(true);
             isNightModeChecked = true;
-            Log.d("XXX","turning night mode on");
         }
     }
     //------------------TOOLBAR/MENU STUFF-------------------------
     //-------------------------------------------------------------
+    //endregion
 
-
-    //-------------------------------------------------------------
-    //----------------FRAGMENT-RELATED STUFF-----------------------
-
+    //region Fragment-related stuff, addFragment methods, "Nothing here", etc
     private void removeNothingIfItsPresent() {
         if (literallyNothingAdded.getVisibility() != View.GONE) {
             literallyNothingAdded.setVisibility(View.GONE);
@@ -162,9 +180,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ft_add_long.commit();
     }
 
-    //----------------FRAGMENT-RELATED STUFF-----------------------
-    //-------------------------------------------------------------
+    private void addPicFragment(String picPath, String str) {
+        fragCount++;
+        removeNothingIfItsPresent();
+        FragmentTransaction ft_add_pic = getSupportFragmentManager().beginTransaction();
+        ft_add_pic.add(R.id.content_main,PictureAddFragment.newInstance(picPath,str,getFragCount()));
+        ft_add_pic.commit();
+    }
 
+    //endregion
+
+    //region FloatingActionButton-related stuff
     //-------------------------------------------------------------
     //----------------------FAB STUFF------------------------------
 
@@ -216,7 +242,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("XXX", "Fab loc");
                 break;
             case R.id.fab_action_add_pic:
-                Log.d("XXX", "Fab pic");
+                animateFAB();
+                PADinit();
                 break;
             case R.id.fab_action_add_time:
                 Log.d("XXX", "Fab time");
@@ -225,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void animateFAB(){
+        //TODO: Horizontal FAB
         if(isFabOpen){
             //then close animations, set unclickable
             fab.startAnimation(rotate_backward);
@@ -239,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab_pic.setClickable(false);
             fab_time.setClickable(false);
             isFabOpen = false;
-            Log.d("XXX", "close");
         } else {
             //open animations, set clickable
             fab.startAnimation(rotate_forward);
@@ -254,15 +281,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab_pic.setClickable(true);
             fab_time.setClickable(true);
             isFabOpen = true;
-            Log.d("XXX","open");
         }
     }
     //----------------------FAB STUFF------------------------------
     //-------------------------------------------------------------
+    //endregion
 
-    //-------------------------------------------------------------
-    //------------------------UTILITY------------------------------
-
+    //region Utility methods
     public static int getFragCount() {
         return fragCount;
     }
@@ -277,7 +302,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String text = editTextMain.getText().toString().trim();
         editTextMain.setText("");
         return text;
+    }
 
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 
     private void hideKeyBoardLoseFocus(View v) {
@@ -287,11 +323,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
-    //------------------------UTILITY------------------------------
-    //-------------------------------------------------------------
 
-    //-------------------------------------------------------------
-    //------------------------DIALOG------------------------------
+    public static boolean hasCameraAndStoragePermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    //endregion
+
+    //region Dialog constructors for each type of note
 
     private void SADinit() {
         //show dialog with custom layout
@@ -318,7 +363,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
             }
         });
-
 
         dialog.show();
     }
@@ -350,8 +394,100 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        dialog.show();
+    }
+
+    private void PADinit() {
+        //init dialog w dialog_add_pic layout
+        AlertDialog.Builder xBuilder = new AlertDialog.Builder(MainActivity.this);
+        View xView = getLayoutInflater().inflate(R.layout.dialog_add_pic,null);
+        final EditText dapText = xView.findViewById(R.id.dap_editText);
+        dapImageButton = xView.findViewById(R.id.dap_pic_upload);
+        xBuilder.setView(xView);
+        final AlertDialog dialog = xBuilder.create();
+
+        //imageButton to select a pic - oh boy, here we go
+        xView.findViewById(R.id.dap_pic_upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!hasCameraAndStoragePermissions(MainActivity.this, cameraStorageRWPermissions)){
+                    //TODO: dialog to explain why you need permissions - shouldShowRequestPermissionRationale()
+                    //TODO: add camera option along with Gallery
+                    ActivityCompat.requestPermissions(MainActivity.this, cameraStorageRWPermissions, STORAGE_CAMERA_PERMISSIONS);
+                } else {
+//                    Intent imgPickIntent = new Intent();
+//                    imgPickIntent.setType("image/*");
+//                    imgPickIntent.setAction(Intent.ACTION_GET_CONTENT);
+//                    startActivityForResult(Intent.createChooser(imgPickIntent, getString(R.string.selectPic)), PICK_IMAGE_FROM_STORAGE);
+
+                    //this actually calls apps that the user usually views the gallery with
+                    Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    getIntent.setType("image/*");
+
+                    Intent pickIntent = new Intent(Intent.ACTION_PICK);
+                    pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+                    // i have no clue about why data and type conflict, let's try what's above
+//                  Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                  pickIntent.setType("image/*");
+
+                    Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+                    startActivityForResult(chooserIntent, PICK_IMAGE_FROM_STORAGE);
+
+                }
+            }
+        });
+
+        //----Yes button
+        //TODO: add check for image, toast "image not selected" if pressed
+        xView.findViewById(R.id.dap_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,R.string.note_added,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                //TODO: actually choose a pic
+                addPicFragment(imageChosenPath,dapText.getText().toString().trim());
+            }
+        });
+        //----No button
+        xView.findViewById(R.id.dap_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
         dialog.show();
     }
+
+
+    //endregion
+
+    //region ActivityResult
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == PICK_IMAGE_FROM_STORAGE && resultCode == Activity.RESULT_OK) {
+            //if we successfully got the pic
+            if (data == null) {
+                //error msg here if the "user" cancels or such
+            } else {
+                Uri selectedImageUri = data.getData();
+                // Get the path from the Uri - USING CUSTOM METHOD (IT'S IN UTILITY METHODS)
+                final String path = getPathFromURI(selectedImageUri);
+                if (path != null) {
+                    File f = new File(path);
+                    selectedImageUri = Uri.fromFile(f);
+                }
+                dapImageButton.setImageURI(selectedImageUri);
+                imageChosenPath = path;
+            }
+        } else {
+            //nothing, i guess
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+    //endregion
 }
 

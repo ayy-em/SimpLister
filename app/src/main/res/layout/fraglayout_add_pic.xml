@@ -3,25 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:weightSum="1"
     android:background="@drawable/layout_rounded_corners">
 
     <ImageButton
-        android:id="@+id/safImageButton"
-        android:layout_width="36dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
+        android:id="@+id/pafPic"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_weight="0.1"
-        android:background="@null"
-        android:contentDescription="@string/expand"
-        android:tint="@color/colorPrimarySuperLight"
-        app:srcCompat="@android:drawable/ic_dialog_dialer" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/logo"
+        tools:ignore="ContentDescription"
+        android:background="@null"  />
 
     <TextView
-        android:id="@+id/safTextView"
+        android:id="@+id/pafTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -35,7 +37,7 @@
         tools:ignore="HardcodedText" />
 
     <ImageButton
-        android:id="@+id/safShare"
+        android:id="@+id/pafShare"
         android:layout_width="36dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
@@ -44,4 +46,5 @@
         app:srcCompat="@drawable/baseline_share_black_36"
         android:tint="@color/colorPrimarySuperLight"
         android:contentDescription="@string/share" />
+
 </LinearLayout>
