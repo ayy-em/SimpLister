@@ -12,17 +12,23 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class LongAddFragment extends Fragment {
 
-    public static final String fragStringContentKey = "LONG_STR_KEY";
-    public static final String fragStringTitleKey = "LONG_STR_KEY";
+    public static final String fragStringContentKey = "LONG_CONTENT_STR_KEY";
+    public static final String fragStringTitleKey = "LONG_TITLE_STR_KEY";
+    public static final String fragStringDateKey = "LONG_DATE_STR_KEY";
     public static final String fragIntKey = "LONG_NUMBER_KEY";
     private TextView tvTitle;
     private TextView tvContent;
+    private TextView tvTimeStamp;
     private ImageButton longShareButton;
 
 
-    public static LongAddFragment newInstance(String strTitle, String strContent, int fragNumber) {
+    public static LongAddFragment newInstance(String strTitle, String strContent, Date date, int fragNumber) {
 
         final LongAddFragment fragment = new LongAddFragment();
 
@@ -31,6 +37,12 @@ public class LongAddFragment extends Fragment {
         params.putString(fragStringTitleKey,strTitle);
         params.putString(fragStringContentKey,strContent);
         params.putInt(fragIntKey,fragNumber);
+
+        //and current date
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM", Locale.US);
+        String dateToStr = format.format(date);
+        params.putString(fragStringDateKey,dateToStr);
+
         fragment.setArguments(params);
         return fragment;
     }
@@ -68,6 +80,10 @@ public class LongAddFragment extends Fragment {
         Bundle params = getArguments();
         tvTitle.setText(params.getString(fragStringTitleKey));
         tvContent.setText(params.getString(fragStringContentKey));
+
+        //set date to fragment
+        tvTimeStamp = (TextView) view.findViewById(R.id.TimeStampLong);
+        tvTimeStamp.setText(params.getString(fragStringDateKey));
 
         longShareButton = (ImageButton) view.findViewById(R.id.shareLong);
         longShareButton.setOnClickListener(new View.OnClickListener() {

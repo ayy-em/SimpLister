@@ -6,41 +6,46 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:weightSum="1"
     android:background="@drawable/layout_rounded_corners">
 
     <com.google.android.gms.maps.MapView
-        android:id="@+id/mapViewFragment"
-        android:layout_width="wrap_content"
+        android:id="@+id/mafMap"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="2dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_weight="0.15" />
+        android:padding="4dp"
+        android:background="@drawable/layout_rounded_corners"
+        />
 
     <TextView
         android:id="@+id/mafTextView"
-        android:layout_width="0dp"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_vertical|start"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="8dp"
-        android:layout_weight="0.75"
-        android:onClick="expandThis"
+        android:layout_marginEnd="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="TEST TEST TEST TEST TEST"
+        android:text="@null"
         android:textSize="16sp"
-        tools:ignore="HardcodedText" />
+         />
+
+    <TextView
+        android:id="@+id/mafTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:text="@null"
+        android:textColor="@color/darkText"
+        android:textSize="14sp"
+        android:textStyle="bold|italic" />
 
     <ImageButton
         android:id="@+id/mafShare"
         android:layout_width="36dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
-        android:layout_weight="0.1"
-        android:layout_marginEnd="8dp"
         android:background="@null"
         app:srcCompat="@drawable/baseline_share_black_36"
         android:tint="@color/colorPrimarySuperLight"

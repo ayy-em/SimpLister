@@ -13,25 +13,34 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class PictureAddFragment extends Fragment {
 
     public static final String fragStringKey = "PAF_STR_KEY";
     public static final String fragPathKey = "PAF_PATH_KEY";
     public static final String fragIntKey = "PAF_INT_KEY";
+    public static final String fragDateKey = "PAF_DATE_KEY";
     private ImageView imageForFragment;
     private TextView textForFragment;
+    private TextView timeStamp;
     private ImageButton pafShareButton;
 
-    public static PictureAddFragment newInstance(String imagePath, String text, int fragNumber) {
+    public static PictureAddFragment newInstance(String imagePath, String text, Date date, int fragNumber) {
 
         //TODO: clicking an image enlarges it
         final PictureAddFragment fragment = new PictureAddFragment();
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM", Locale.US);
+        String dateToStr = format.format(date);
 
         //create a bundle with fragment text and number
         final Bundle params = new Bundle();
         params.putString(fragStringKey,text);
         params.putInt(fragIntKey,fragNumber);
         params.putString(fragPathKey,imagePath);
+        params.putString(fragDateKey,dateToStr);
         fragment.setArguments(params);
         return fragment;
     }
@@ -75,6 +84,10 @@ public class PictureAddFragment extends Fragment {
         //and set the pic to what the user chose
         imageForFragment = (ImageView) view.findViewById(R.id.pafPic);
         imageForFragment.setImageBitmap(BitmapFactory.decodeFile(params.getString(fragPathKey)));
+
+        //and the timestamp
+        timeStamp = (TextView) view.findViewById(R.id.pafTimeStamp);
+        timeStamp.setText(params.getString(fragDateKey));
 
         //share button stuff
         //TODO: shares not only text, but the image as well

@@ -27,12 +27,25 @@
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="6dp"
-        android:layout_weight="0.8"
+        android:layout_weight="0.75"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="TEST TEST TEST TEST TEST"
         android:textSize="16sp"
         tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/safTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="2dp"
+        android:layout_weight="0.05"
+        android:gravity="center"
+        android:text="@null"
+        android:textColor="@color/darkText"
+        android:textSize="14sp"
+        android:textStyle="bold|italic" />
 
     <ImageButton
         android:id="@+id/safShare"

@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -21,6 +23,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,13 +52,14 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //region Variable declarations
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab,fab_add,fab_long,fab_pic,fab_loc,fab_time;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private FloatingActionButton fab, fab_add, fab_long, fab_pic, fab_loc, fab_time;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     public Boolean isNightModeChecked = false;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerAdapter;
@@ -67,9 +71,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static int fragCount = 0;
     public static final int STORAGE_CAMERA_PERMISSIONS = 456;
     public static final int PICK_IMAGE_FROM_STORAGE = 345;
+    public static final int LOCATION_PERMISSIONS = 675;
     ImageButton dapImageButton;
     private String imageChosenPath;
     final String[] cameraStorageRWPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private Date now;
     //endregion
 
     //region onCreate - find views, assign them, etc
@@ -94,20 +100,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //endregion
 
     //region Toolbar-related stuff
-    //-------------------------------------------------------------
-    //------------------TOOLBAR/MENU STUFF-------------------------
     //TODO: landscape mode settings (icons)
     //TODO: toolbar height dynamically changes
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
 
         //SHARE button - if it doesn't work, convert SAP to class variables
         MenuItem item_share = menu.findItem(R.id.action_share);
         ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item_share);
         Intent shareButtonIntent = new Intent(Intent.ACTION_SEND);
         shareButtonIntent.setType("message/rfc822");
-        shareButtonIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_text));
+        shareButtonIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
         shareActionProvider.setShareIntent(shareButtonIntent);
 
         //ABOUT button in the menu
@@ -123,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //settings and night mode below
     }
 
-    public void goToSettings(MenuItem item){
+    public void goToSettings(MenuItem item) {
         //TODO: intent to settings page + settings page
         //if fab is open, close it before going to about
         if (isFabOpen) {
@@ -138,11 +142,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.fab).callOnClick();
         }
         //go to about (class: AboutScreen, layout about_screen.xml (port/land separately)
-        Intent aboutIntent = new Intent(this,AboutScreen.class);
+        Intent aboutIntent = new Intent(this, AboutScreen.class);
         startActivity(aboutIntent);
     }
 
-    public void toggleNightMode(MenuItem item){
+    public void toggleNightMode(MenuItem item) {
         //TODO: Night mode
         //check if night mode is on/off and toggle to a different position
         if (isNightModeChecked) {
@@ -153,8 +157,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             isNightModeChecked = true;
         }
     }
-    //------------------TOOLBAR/MENU STUFF-------------------------
-    //-------------------------------------------------------------
     //endregion
 
     //region Fragment-related stuff, addFragment methods, "Nothing here", etc
@@ -167,32 +169,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void addSimpleFragment(String str) {
         fragCount++;
         removeNothingIfItsPresent();
+        now = new Date();
         FragmentTransaction ft_add_simple = getSupportFragmentManager().beginTransaction();
-        ft_add_simple.add(R.id.content_main,SimpleAddFragment.newInstance(str,getFragCount()));
+        ft_add_simple.add(R.id.content_main, SimpleAddFragment.newInstance(str, now, getFragCount()));
         ft_add_simple.commit();
     }
 
     private void addLongFragment(String title, String content) {
         fragCount++;
         removeNothingIfItsPresent();
+        now = new Date();
         FragmentTransaction ft_add_long = getSupportFragmentManager().beginTransaction();
-        ft_add_long.add(R.id.content_main,LongAddFragment.newInstance(title,content,getFragCount()));
+        ft_add_long.add(R.id.content_main, LongAddFragment.newInstance(title, content, now, getFragCount()));
         ft_add_long.commit();
     }
 
     private void addPicFragment(String picPath, String str) {
         fragCount++;
         removeNothingIfItsPresent();
+        now = new Date();
         FragmentTransaction ft_add_pic = getSupportFragmentManager().beginTransaction();
-        ft_add_pic.add(R.id.content_main,PictureAddFragment.newInstance(picPath,str,getFragCount()));
+        ft_add_pic.add(R.id.content_main, PictureAddFragment.newInstance(picPath, str, now, getFragCount()));
+        ft_add_pic.commit();
+    }
+
+    private void addLocFramgent(String text) {
+        fragCount++;
+        //TODO: transfer chosen location
+        removeNothingIfItsPresent();
+        now = new Date();
+        //get user's location
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        FragmentTransaction ft_add_pic = getSupportFragmentManager().beginTransaction();
+        ft_add_pic.add(R.id.content_main,MapAddFragment.newInstance(text,now,latitude,longitude,getFragCount()));
         ft_add_pic.commit();
     }
 
     //endregion
 
     //region FloatingActionButton-related stuff
-    //-------------------------------------------------------------
-    //----------------------FAB STUFF------------------------------
 
     private void getNiceFloatingActionButton() {
         //TODO: FAB horizontal on rotation
@@ -239,7 +260,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 LADinit();
                 break;
             case R.id.fab_action_add_loc:
-                Log.d("XXX", "Fab loc");
+                animateFAB();
+                MADinit();
                 break;
             case R.id.fab_action_add_pic:
                 animateFAB();
@@ -283,8 +305,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             isFabOpen = true;
         }
     }
-    //----------------------FAB STUFF------------------------------
-    //-------------------------------------------------------------
+
     //endregion
 
     //region Utility methods
@@ -353,11 +374,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //TODO: what happens if the field is empty
                 Toast.makeText(MainActivity.this,getString(R.string.note_added),Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                addSimpleFragment(dasET.getText().toString().trim());
+                addLocFramgent(dasET.getText().toString().trim());
             }
         });
         //----NO BUTTON----
         xView.findViewById(R.id.das_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void MADinit() {
+        //ask for location permission
+        if (ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //TODO: explanation dialog + what if no
+            ActivityCompat.requestPermissions(MainActivity.this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSIONS);
+        }
+
+        //create dialog window
+        AlertDialog.Builder xBuilder = new AlertDialog.Builder(MainActivity.this);
+        View xView = getLayoutInflater().inflate(R.layout.dialog_add_loc,null);
+        final EditText damET = xView.findViewById(R.id.dam_editText);
+        xBuilder.setView(xView);
+        final AlertDialog dialog = xBuilder.create();
+
+        //----Yes button
+        xView.findViewById(R.id.dam_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: what happens if the field is empty
+                //TODO: map
+                Toast.makeText(MainActivity.this,getString(R.string.note_added),Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                addLocFramgent(damET.getText().toString().trim());
+            }
+        });
+        //----No button
+        xView.findViewById(R.id.dam_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -415,18 +472,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //TODO: add camera option along with Gallery
                     ActivityCompat.requestPermissions(MainActivity.this, cameraStorageRWPermissions, STORAGE_CAMERA_PERMISSIONS);
                 } else {
-//                    Intent imgPickIntent = new Intent();
-//                    imgPickIntent.setType("image/*");
-//                    imgPickIntent.setAction(Intent.ACTION_GET_CONTENT);
-//                    startActivityForResult(Intent.createChooser(imgPickIntent, getString(R.string.selectPic)), PICK_IMAGE_FROM_STORAGE);
-
                     //this actually calls apps that the user usually views the gallery with
                     Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
                     getIntent.setType("image/*");
 
                     Intent pickIntent = new Intent(Intent.ACTION_PICK);
                     pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-                    // i have no clue about why data and type conflict, let's try what's above
+                    // i have no clue about why data and type conflict, let's try what's above instead of below, it works
 //                  Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                  pickIntent.setType("image/*");
 

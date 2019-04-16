@@ -57,6 +57,22 @@
         app:layout_constraintStart_toEndOf="@+id/addLongButton"
         tools:ignore="HardcodedText" />
 
+    <TextView
+        android:id="@+id/TimeStampLong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="20dp"
+        android:layout_weight="0.1"
+        android:gravity="center"
+        android:text="@null"
+        android:textColor="@color/darkText"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/shareLong"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
         android:id="@+id/shareLong"
         android:layout_width="36dp"

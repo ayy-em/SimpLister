@@ -13,15 +13,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class SimpleAddFragment extends Fragment  {
 
     public static final String fragStringKey = "SAF_STR_KEY";
     public static final String fragIntKey = "SAF_NUMBER_KEY";
+    public static final String fragDateKey = "SAF_DATE_KEY";
     private TextView tv;
     private ImageButton safShareButton;
+    private TextView safTimeStamp;
 
-
-    public static SimpleAddFragment newInstance(String str, int fragNumber) {
+    public static SimpleAddFragment newInstance(String str, Date date, int fragNumber) {
 
         final SimpleAddFragment fragment = new SimpleAddFragment();
 
@@ -29,6 +34,12 @@ public class SimpleAddFragment extends Fragment  {
         final Bundle params = new Bundle();
         params.putString(fragStringKey,str);
         params.putInt(fragIntKey,fragNumber);
+
+        //add date to fragments params
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM",Locale.US);
+        String dateToStr = format.format(date);
+
+        params.putString(fragDateKey,dateToStr);
         fragment.setArguments(params);
         return fragment;
     }
@@ -74,6 +85,10 @@ public class SimpleAddFragment extends Fragment  {
         tv = (TextView) view.findViewById(R.id.safTextView);
         Bundle params = getArguments();
         tv.setText(params.getString(fragStringKey));
+
+        //set date to fragment
+        safTimeStamp = (TextView) view.findViewById(R.id.safTimeStamp);
+        safTimeStamp.setText(params.getString(fragDateKey));
 
         //share button stuff
         safShareButton = (ImageButton) view.findViewById(R.id.safShare);
