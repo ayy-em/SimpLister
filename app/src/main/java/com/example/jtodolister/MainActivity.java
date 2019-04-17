@@ -1,6 +1,10 @@
 package com.example.jtodolister;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +15,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.Image;
@@ -41,10 +47,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,12 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab, fab_add, fab_long, fab_pic, fab_loc, fab_time;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     public Boolean isNightModeChecked = false;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ViewGroup fragData;
     private TextView literallyNothingAdded;
-    private static FragmentTransaction ft_general;
     //TODO: edit text focus listener to deflate FAB
     private static int fragCount = 0;
     public static final int STORAGE_CAMERA_PERMISSIONS = 456;
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String imageChosenPath;
     final String[] cameraStorageRWPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
     private Date now;
+    private Animator currentAnimator;
+    private int shortAnimationDuration;
     //endregion
 
     //region onCreate - find views, assign them, etc
@@ -96,6 +101,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //nothing text gone if fragment placed
         literallyNothingAdded = (TextView) findViewById(R.id.nothing_here_textview);
+
+        //short animation duration from the system
+        shortAnimationDuration = getResources().getInteger(
+                android.R.integer.config_shortAnimTime);
     }
     //endregion
 
@@ -189,7 +198,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         removeNothingIfItsPresent();
         now = new Date();
         FragmentTransaction ft_add_pic = getSupportFragmentManager().beginTransaction();
-        ft_add_pic.add(R.id.content_main, PictureAddFragment.newInstance(picPath, str, now, getFragCount()));
+        PictureAddFragment fragment = PictureAddFragment.newInstance(picPath, str, now, getFragCount());
+        ft_add_pic.add(R.id.content_main, fragment);
         ft_add_pic.commit();
     }
 
@@ -209,6 +219,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FragmentTransaction ft_add_pic = getSupportFragmentManager().beginTransaction();
         ft_add_pic.add(R.id.content_main,MapAddFragment.newInstance(text,now,latitude,longitude,getFragCount()));
         ft_add_pic.commit();
+    }
+
+    private void addCalFragment(String dateGiven, String textGiven) {
+        fragCount++;
+        removeNothingIfItsPresent();
+        now = new Date();
+        FragmentTransaction ft_add_cal = getSupportFragmentManager().beginTransaction();
+        ft_add_cal.add(R.id.content_main,CalAddFragment.newInstance(textGiven,dateGiven,now,getFragCount()));
+        ft_add_cal.commit();
     }
 
     //endregion
@@ -268,7 +287,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 PADinit();
                 break;
             case R.id.fab_action_add_time:
-                Log.d("XXX", "Fab time");
+                animateFAB();
+                CADinit();
                 break;
         }
     }
@@ -311,6 +331,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //region Utility methods
     public static int getFragCount() {
         return fragCount;
+    }
+
+    public void MakeShortNoteAddedToast() {
+        Toast.makeText(MainActivity.this,R.string.note_added,Toast.LENGTH_SHORT).show();
     }
 
     private boolean editTextMainEmpty() {
@@ -372,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 //TODO: what happens if the field is empty
-                Toast.makeText(MainActivity.this,getString(R.string.note_added),Toast.LENGTH_SHORT).show();
+                MakeShortNoteAddedToast();
                 dialog.dismiss();
                 addLocFramgent(dasET.getText().toString().trim());
             }
@@ -408,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 //TODO: what happens if the field is empty
                 //TODO: map
-                Toast.makeText(MainActivity.this,getString(R.string.note_added),Toast.LENGTH_SHORT).show();
+                MakeShortNoteAddedToast();
                 dialog.dismiss();
                 addLocFramgent(damET.getText().toString().trim());
             }
@@ -438,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 //TODO: what happens if the field is empty
-                Toast.makeText(MainActivity.this,getString(R.string.note_added),Toast.LENGTH_SHORT).show();
+                MakeShortNoteAddedToast();
                 dialog.dismiss();
                 addLongFragment(dalTitle.getText().toString().trim(),dalContent.getText().toString().trim());
             }
@@ -484,9 +508,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
                     chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
-
                     startActivityForResult(chooserIntent, PICK_IMAGE_FROM_STORAGE);
-
                 }
             }
         });
@@ -496,9 +518,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         xView.findViewById(R.id.dap_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,R.string.note_added,Toast.LENGTH_SHORT).show();
+                MakeShortNoteAddedToast();
                 dialog.dismiss();
-                //TODO: actually choose a pic
                 addPicFragment(imageChosenPath,dapText.getText().toString().trim());
             }
         });
@@ -511,6 +532,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         dialog.show();
+    }
+
+    private void CADinit() {
+        //init dialog w dialog_add_pic layout
+        AlertDialog.Builder xBuilder = new AlertDialog.Builder(MainActivity.this);
+        final View xView = getLayoutInflater().inflate(R.layout.dialog_add_cal,null);
+        final EditText dacEditText = (EditText) findViewById(R.id.dac_editText);
+        final ImageButton dacPickDateButton = (ImageButton) findViewById(R.id.dac_date_pick);
+        xBuilder.setView(xView);
+        final AlertDialog ad = xBuilder.create();
+
+        xView.findViewById(R.id.dac_date_pick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: pick date + check if date picked before OK + date displays on image
+                Toast.makeText(MainActivity.this, getString(R.string.placeholder), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        xView.findViewById(R.id.dac_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MakeShortNoteAddedToast();
+                ad.dismiss();
+                String placeholderDateGiven = "23.05";
+                EditText et = (EditText) xView.findViewById(R.id.dac_editText);
+                String text = et.getText().toString().trim();
+                addCalFragment(placeholderDateGiven, text);
+            }
+        });
+        xView.findViewById(R.id.dac_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ad.dismiss();
+            }
+        });
+
+        ad.show();
     }
 
 
@@ -539,6 +598,132 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //nothing, i guess
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+    //endregion
+
+    //region zoom animation for pic fragment's thumbnail
+    //TODO: i dunno, it's not good, maybe put animations in another thread, idk
+    public void zoomImageFromThumb(final ImageView imageViewSmall, Bitmap bm, View view) {
+        //cancel ongoing animations, if any
+        if (currentAnimator != null) {
+            currentAnimator.cancel();
+        }
+        final ImageView expandedImageView = (ImageView) findViewById(R.id.expanded_image);
+        expandedImageView.setImageBitmap(bm);
+
+        //variables for bounds of small image and bounds of expanded image
+        final Rect startBounds = new Rect();
+        final Rect finalBounds = new Rect();
+        final Point globalOffset = new Point();
+
+        //set thumbnail from fragment to small bounds
+        imageViewSmall.getGlobalVisibleRect(startBounds);
+        //find, define, calculate bounds of big rect
+        findViewById(R.id.expanded_image)
+                .getGlobalVisibleRect(finalBounds, globalOffset);
+        //offset them by global offset
+        startBounds.offset(-globalOffset.x, -globalOffset.y);
+        finalBounds.offset(-globalOffset.x, -globalOffset.y);
+        //now adjust bounds to handle orientation/aspect ratio difference + calculate scale factor
+        float startScale;
+        //if final's w/h ratio is bigger than start's...
+        if ((float) finalBounds.width() / finalBounds.height()
+                > (float) startBounds.width() / startBounds.height()) {
+            //then expand bounds horizontally first
+            startScale = (float) startBounds.height() / finalBounds.height();
+            float startWidth = startScale * finalBounds.width();
+            float deltaWidth = (startWidth - startBounds.width()) / 2;
+            startBounds.left -= deltaWidth;
+            startBounds.right += deltaWidth;
+        } else {
+            //same for vertical/square case
+            startScale = (float) startBounds.width() / finalBounds.width();
+            float startHeight = startScale * finalBounds.height();
+            float deltaHeight = (startHeight - startBounds.height()) / 2;
+            startBounds.top -= deltaHeight;
+            startBounds.bottom += deltaHeight;
+        }
+        //hide (alpha = 0) the thumbnail (later replaced by small big img) and unhide the zoomed-in view
+        imageViewSmall.setAlpha(0f);
+        expandedImageView.setVisibility(View.VISIBLE);
+
+        //set pivot to top left corner
+        expandedImageView.setPivotX(0f);
+        expandedImageView.setPivotY(0f);
+
+        //construct a set of 4 concurrent animations for each of the corners
+        AnimatorSet set = new AnimatorSet();
+        set
+                .play(ObjectAnimator.ofFloat(expandedImageView, View.X,
+                        startBounds.left, finalBounds.left))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
+                        startBounds.top, finalBounds.top))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
+                        startScale, 1f))
+                .with(ObjectAnimator.ofFloat(expandedImageView,
+                        View.SCALE_Y, startScale, 1f));
+        set.setDuration(shortAnimationDuration);
+        set.setInterpolator(new DecelerateInterpolator());
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                currentAnimator = null;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                currentAnimator = null;
+            }
+        });
+        set.start();
+        currentAnimator = set;
+
+        //clicking the expanded image zooms out back to thumbnail
+        final float startScaleFinal = startScale;
+        expandedImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //check for ongoing animations
+                if (currentAnimator != null) {
+                    currentAnimator.cancel();
+                }
+
+                //animate four of them simultaneously
+                AnimatorSet set = new AnimatorSet();
+                set.play(ObjectAnimator
+                        .ofFloat(expandedImageView, View.X, startBounds.left))
+                        .with(ObjectAnimator
+                                .ofFloat(expandedImageView,
+                                        View.Y,startBounds.top))
+                        .with(ObjectAnimator
+                                .ofFloat(expandedImageView,
+                                        View.SCALE_X, startScaleFinal))
+                        .with(ObjectAnimator
+                                .ofFloat(expandedImageView,
+                                        View.SCALE_Y, startScaleFinal));
+                set.setDuration(shortAnimationDuration);
+                set.setInterpolator(new DecelerateInterpolator());
+                set.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        //unhide thumb, remove big view, clear animator
+                        imageViewSmall.setAlpha(1f);
+                        expandedImageView.setVisibility(View.GONE);
+                        currentAnimator = null;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        //unhide thumb, remove big view, clear animator
+                        imageViewSmall.setAlpha(1f);
+                        expandedImageView.setVisibility(View.GONE);
+                        currentAnimator = null;
+                    }
+                });
+                set.start();
+                currentAnimator = set;
+            }
+        });
     }
     //endregion
 }

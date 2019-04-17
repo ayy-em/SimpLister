@@ -11,13 +11,14 @@
 
     <ImageButton
         android:id="@+id/safImageButton"
-        android:layout_width="36dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:layout_weight="0.1"
+        android:layout_margin="8dp"
         android:background="@null"
         android:contentDescription="@string/expand"
-        android:tint="@color/colorPrimarySuperLight"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@android:drawable/ic_dialog_dialer" />
 
     <TextView
@@ -25,8 +26,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="6dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         android:layout_weight="0.75"
         android:ellipsize="end"
         android:maxLines="1"
@@ -38,8 +39,7 @@
         android:id="@+id/safTimeStamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="2dp"
+        android:layout_gravity="center_vertical|end"
         android:layout_weight="0.05"
         android:gravity="center"
         android:text="@null"
@@ -49,10 +49,11 @@
 
     <ImageButton
         android:id="@+id/safShare"
-        android:layout_width="36dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
         android:layout_weight="0.1"
+        android:layout_margin="8dp"
         android:background="@null"
         app:srcCompat="@drawable/baseline_share_black_36"
         android:tint="@color/colorPrimarySuperLight"

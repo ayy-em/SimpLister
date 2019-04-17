@@ -79,7 +79,7 @@ public class SimpleAddFragment extends Fragment  {
                         .remove(SimpleAddFragment.this).commit();
                 super.onSwipeRight();
             }
-    });
+        });
 
         //set user's text to that fragment
         tv = (TextView) view.findViewById(R.id.safTextView);

@@ -96,6 +96,13 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/baseline_add_black_36" />
 
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:contentDescription="@string/description_zoom_touch_close" />
+
     <EditText
         android:id="@+id/entryEditTextMain"
         android:layout_width="360dp"

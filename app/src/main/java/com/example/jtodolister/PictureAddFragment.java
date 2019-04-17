@@ -1,6 +1,7 @@
 package com.example.jtodolister;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ public class PictureAddFragment extends Fragment {
     public static final String fragIntKey = "PAF_INT_KEY";
     public static final String fragDateKey = "PAF_DATE_KEY";
     private ImageView imageForFragment;
+    private ImageView expandedImageView;
     private TextView textForFragment;
     private TextView timeStamp;
     private ImageButton pafShareButton;
@@ -76,18 +78,27 @@ public class PictureAddFragment extends Fragment {
             }
         });
 
+        Bundle params = getArguments();
+        //set the timestamp
+        timeStamp = (TextView) view.findViewById(R.id.pafTimeStamp);
+        timeStamp.setText(params.getString(fragDateKey));
+
         //set user's text to that fragment
         textForFragment = (TextView) view.findViewById(R.id.pafTextView);
-        Bundle params = getArguments();
         textForFragment.setText(params.getString(fragStringKey));
 
         //and set the pic to what the user chose
         imageForFragment = (ImageView) view.findViewById(R.id.pafPic);
-        imageForFragment.setImageBitmap(BitmapFactory.decodeFile(params.getString(fragPathKey)));
+        final Bitmap imageBitmap = BitmapFactory.decodeFile(params.getString(fragPathKey));
+        imageForFragment.setImageBitmap(imageBitmap);
 
-        //and the timestamp
-        timeStamp = (TextView) view.findViewById(R.id.pafTimeStamp);
-        timeStamp.setText(params.getString(fragDateKey));
+        //now expand animation on image click
+        imageForFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                zoomPic(imageForFragment,imageBitmap,v);
+            }
+        });
 
         //share button stuff
         //TODO: shares not only text, but the image as well
@@ -102,4 +113,9 @@ public class PictureAddFragment extends Fragment {
             }
         });
     }
+
+    public void zoomPic(ImageView smallImage, Bitmap bm, View view) {
+        ((MainActivity)getActivity()).zoomImageFromThumb(smallImage,bm,view);
+    }
+
 }

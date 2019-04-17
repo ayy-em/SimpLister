@@ -6,6 +6,7 @@
     <string name="fab_add_loc">Location Note</string>
     <string name="fab_add_time">Time Note</string>
     <string name="settings">Settings</string>
+    <string name="reminder">Reminder: </string>
     <string name="night_mode">Night Mode</string>
     <string name="about">About</string>
     <string name="goToWeb">Go to website</string>
@@ -13,19 +14,22 @@
     <string name="mailMe">E-mail me</string>
     <string name="uploadPic">Upload a picture</string>
     <string name="uploadLoc">Upload a location</string>
+    <string name="chooseDate">Chose a date</string>
     <string name="expand">Expand this</string>
     <string name="typeHere">Type here</string>
     <string name="share">Share</string>
+    <string name="placeholder">placeholder, all good</string>
     <string name="note_added">Note added!</string>
     <string name="addSimpDialTitle">Add a short note</string>
     <string name="addLongDialTitle">Add a long note</string>
     <string name="addPicDialTitle">Add an image note</string>
     <string name="addLocDialTitle">Add a location note</string>
-    <string name="addTimeDialTitle">Add a calendar note</string>
+    <string name="addCalTitle">Add a calendar note</string>
     <string name="selectPic">Choose an image for your note</string>
+    <string name="description_zoom_touch_close">Touch to close the big view</string>
     <string name="nothing_here">Nothing added yet…"\n"How about you add something?</string>
     <string name="share_text">Check out SimpLister, a cool app i found on Play Store!</string>
     <string name="about_jtodo">SimpLister is a simple to-do list application written for Android using Java. It\'s completely free and open source. You can download the source code using the GitHub button below and contribute
     to the project by adding new features or reporting bugs.\n \nContact me at mironov-hse@yandex.ru or visit jm-ams.nl to tell me whatever it is you think.</string>
-    <string name="google_maps_key">HAHA ITS A PLACEHOLDER - MAP API GOES HERE</string>
+    <string name="google_maps_key">PLACEHOLDER, REAL API KEY GOES HERE</string>
 </resources>

@@ -9,55 +9,54 @@
     android:weightSum="1"
     android:background="@drawable/layout_rounded_corners">
 
-    <ImageButton
-        android:id="@+id/addLongButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:layout_margin="8dp"
-        android:background="@null"
-        android:layout_weight="0.1"
-        android:contentDescription="@string/expand"
-        android:tint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_dialog_dialer" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="0.75"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        >
+        android:layout_weight="0.1"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp">
+
+        <ImageButton
+            android:id="@+id/cafImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="centerInside"
+            android:background="@null"
+            android:contentDescription="@string/expand"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/baseline_calendar_today_black_48"/>
 
         <TextView
-            android:id="@+id/titleLongTextView"
+            android:id="@+id/cafDateSetTextView"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical|start"
-            android:maxLines="1"
-            android:text="TextView"
-            android:textStyle="bold"
+            android:layout_height="24dp"
+            android:gravity="center|top"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/darkText"
+            android:textSize="12sp"
+            android:textStyle="bold|italic"
+            android:text="23.05"
             tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/contentLongTextView"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginBottom="12dp"
-            android:ellipsize="end"
-            android:gravity="start"
-            android:maxLines="1"
-            android:text="TEST TEST TEST TEST TEST"
-            tools:ignore="HardcodedText" />
-
     </LinearLayout>
 
-
+    <TextView
+        android:id="@+id/cafTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_weight="0.75"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="TEST TEST TEST TEST TEST"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/TimeStampLong"
+        android:id="@+id/cafTimeStamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
@@ -69,7 +68,7 @@
         android:textStyle="bold|italic" />
 
     <ImageButton
-        android:id="@+id/shareLong"
+        android:id="@+id/cafShare"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
