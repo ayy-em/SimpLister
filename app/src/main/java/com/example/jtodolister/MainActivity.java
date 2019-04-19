@@ -7,6 +7,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -50,6 +52,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -60,6 +63,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -543,25 +547,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         xBuilder.setView(xView);
         final AlertDialog ad = xBuilder.create();
 
+        //----Pick a date, initiate another dialog
         xView.findViewById(R.id.dac_date_pick).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: pick date + check if date picked before OK + date displays on image
-                Toast.makeText(MainActivity.this, getString(R.string.placeholder), Toast.LENGTH_LONG).show();
+                //TODO: custom DatePickerFragment
+//                DialogFragment pickDateFragment = new DatePickerFragment();
+//                pickDateFragment.show(getSupportFragmentManager(),"date picker tag yo");
+                final TextView tvDateSet = (TextView) ad.findViewById(R.id.datePickedTextView);
+                final Calendar calendar = Calendar.getInstance();
+                int yy = calendar.get(Calendar.YEAR);
+                int mm = calendar.get(Calendar.MONTH);
+                int dd = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePicker = new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        String textToSet;
+                        if (dayOfMonth > 9 && monthOfYear > 9) {
+                            textToSet = dayOfMonth + "." + monthOfYear;
+                        } else if (dayOfMonth < 10 && monthOfYear > 9) {
+                            textToSet = "0" + dayOfMonth + "." + monthOfYear;
+                        } else if (dayOfMonth > 9 && monthOfYear < 10){
+                            textToSet = dayOfMonth + ".0" + monthOfYear;
+                        } else {
+                            textToSet = "0" + dayOfMonth + ".0" + monthOfYear;
+                        }
+                        tvDateSet.setText(textToSet);
+                    }
+                }, yy, mm, dd);
+                datePicker.show();
             }
         });
 
+        //----Yes (Post)
         xView.findViewById(R.id.dac_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MakeShortNoteAddedToast();
                 ad.dismiss();
-                String placeholderDateGiven = "23.05";
+                TextView tv_yo = (TextView) findViewById(R.id.datePickedTextView);
+                String userDateGiven = "23.05";
                 EditText et = (EditText) xView.findViewById(R.id.dac_editText);
                 String text = et.getText().toString().trim();
-                addCalFragment(placeholderDateGiven, text);
+                addCalFragment(userDateGiven, text);
             }
         });
+        //----No (Discard)
         xView.findViewById(R.id.dac_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -571,7 +602,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ad.show();
     }
-
 
     //endregion
 

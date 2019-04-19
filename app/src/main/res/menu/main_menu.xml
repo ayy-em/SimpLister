@@ -4,11 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/settings_menu"
-        android:onClick="goToSettings"
-        android:title="@string/settings"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/night_mode_menu"
         android:checkable="true"
         android:onClick="toggleNightMode"
