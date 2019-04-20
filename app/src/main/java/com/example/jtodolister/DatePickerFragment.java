@@ -13,6 +13,8 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
+    //This whole thing is not used yet, but will be when i get around to making custom datepicker
+
     private String yearGivenKey = "Year_Key";
     private String monthGivenKey = "Month_Key";
     private String dayGivenKey = "Day_Key";
@@ -33,7 +35,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        //TODO: actually transfer date picked to screen
 //        Bundle b = new Bundle();
 //        b.putInt(yearGivenKey,year);
 //        b.putInt(monthGivenKey,month);

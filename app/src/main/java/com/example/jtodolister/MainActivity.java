@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //if edit_text is not empty, create a simplefragment and add it to layout
                 if (!editTextMainEmpty()) {
                     addSimpleFragment(getMainEditTextStringAndClearIt());
+                    MakeShortNoteAddedToast();
                     hideKeyBoardLoseFocus(v);
                 } else {
                     animateFAB();
@@ -402,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //TODO: what happens if the field is empty
                 MakeShortNoteAddedToast();
                 dialog.dismiss();
-                addLocFramgent(dasET.getText().toString().trim());
+                addSimpleFragment(dasET.getText().toString().trim());
             }
         });
         //----NO BUTTON----

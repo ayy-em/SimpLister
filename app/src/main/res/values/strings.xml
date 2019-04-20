@@ -32,5 +32,5 @@
     <string name="share_text">Check out SimpLister, a cool app i found on Play Store!</string>
     <string name="about_jtodo">SimpLister is a simple to-do list application written for Android using Java. It\'s completely free and open source. You can download the source code using the GitHub button below and contribute
     to the project by adding new features or reporting bugs.\n \nContact me at mironov-hse@yandex.ru or visit jm-ams.nl to tell me whatever it is you think.</string>
-    <string name="google_maps_key">im not telling you</string>
+    <string name="google_maps_key">no no no</string>
 </resources>

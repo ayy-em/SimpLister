@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,10 +26,12 @@ public class SimpleAddFragment extends Fragment  {
     private TextView tv;
     private ImageButton safShareButton;
     private TextView safTimeStamp;
+    private Boolean isExpanded;
 
     public static SimpleAddFragment newInstance(String str, Date date, int fragNumber) {
 
         final SimpleAddFragment fragment = new SimpleAddFragment();
+        fragment.isExpanded = false;
 
         //create a bundle with fragment text and number
         final Bundle params = new Bundle();
@@ -63,6 +66,7 @@ public class SimpleAddFragment extends Fragment  {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final View thisView = this.getView();
 
         //swipe ontouch to delete it from main screen
         view.setOnTouchListener(new OnSwipeTouchListener(view.getContext()) {
@@ -99,6 +103,23 @@ public class SimpleAddFragment extends Fragment  {
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tv.getText().toString().trim());
                 startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)));
+            }
+        });
+
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    ExpandCollapse.Collapse(thisView);
+                    tv.setMaxLines(1);
+                    tv.setEllipsize(TextUtils.TruncateAt.END);
+                    isExpanded = false;
+                } else {
+                    tv.setMaxLines(Integer.MAX_VALUE);
+                    tv.setEllipsize(null);
+                    ExpandCollapse.Expand(thisView);
+                    isExpanded = true;
+                }
             }
         });
     }

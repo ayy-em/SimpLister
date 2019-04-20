@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -26,11 +31,14 @@ public class LongAddFragment extends Fragment {
     private TextView tvContent;
     private TextView tvTimeStamp;
     private ImageButton longShareButton;
+    private ImageButton addLongButton;
+    private Boolean isExpanded;
 
 
     public static LongAddFragment newInstance(String strTitle, String strContent, Date date, int fragNumber) {
 
         final LongAddFragment fragment = new LongAddFragment();
+        fragment.isExpanded = false;
 
         //create a bundle with fragment text and number
         final Bundle params = new Bundle();
@@ -59,6 +67,7 @@ public class LongAddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final View thisView = this.getView();
 
         view.setOnTouchListener(new OnSwipeTouchListener(view.getContext()) {
             @Override
@@ -85,6 +94,37 @@ public class LongAddFragment extends Fragment {
         tvTimeStamp = (TextView) view.findViewById(R.id.TimeStampLong);
         tvTimeStamp.setText(params.getString(fragStringDateKey));
 
+        //onclick for menu
+        addLongButton = (ImageButton) view.findViewById(R.id.addLongButton);
+        //TODO: this
+
+        //onclick to expand fragment to height
+        tvContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    ExpandCollapse.Collapse(thisView);
+                    isExpanded = false;
+                } else {
+                    ExpandCollapse.Expand(thisView);
+                    isExpanded = true;
+                }
+            }
+        });
+        tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    ExpandCollapse.Collapse(thisView);
+                    isExpanded = false;
+                } else {
+                    ExpandCollapse.Expand(thisView);
+                    isExpanded = true;
+                }
+            }
+        });
+
+        //share button stuff
         longShareButton = (ImageButton) view.findViewById(R.id.shareLong);
         longShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
