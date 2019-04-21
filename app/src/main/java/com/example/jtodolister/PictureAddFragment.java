@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class PictureAddFragment extends Fragment {
     private TextView textForFragment;
     private TextView timeStamp;
     private ImageButton pafShareButton;
+    private Boolean isExpanded;
 
     public static PictureAddFragment newInstance(String imagePath, String text, Date date, int fragNumber) {
 
@@ -36,6 +38,7 @@ public class PictureAddFragment extends Fragment {
         final PictureAddFragment fragment = new PictureAddFragment();
         SimpleDateFormat format = new SimpleDateFormat("dd.MM", Locale.US);
         String dateToStr = format.format(date);
+        fragment.isExpanded = false;
 
         //create a bundle with fragment text and number
         final Bundle params = new Bundle();
@@ -59,6 +62,7 @@ public class PictureAddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final View thisView = this.getView();
 
         //swipe ontouch to delete it from main screen
         view.setOnTouchListener(new OnSwipeTouchListener(view.getContext()) {
@@ -97,6 +101,23 @@ public class PictureAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 zoomPic(imageForFragment,imageBitmap,v);
+            }
+        });
+
+        textForFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    ExpandCollapse.CollapseImg(thisView,imageForFragment,textForFragment);
+                    textForFragment.setMaxLines(1);
+                    textForFragment.setEllipsize(TextUtils.TruncateAt.END);
+                    isExpanded = false;
+                } else {
+                    textForFragment.setMaxLines(Integer.MAX_VALUE);
+                    textForFragment.setEllipsize(null);
+                    ExpandCollapse.ExpandImg(thisView,imageForFragment,textForFragment);
+                    isExpanded = true;
+                }
             }
         });
 

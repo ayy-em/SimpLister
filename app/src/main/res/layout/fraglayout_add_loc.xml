@@ -10,7 +10,7 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mafMap"
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="match_parent"
         android:padding="4dp"
         android:background="@drawable/layout_rounded_corners"
@@ -18,11 +18,14 @@
 
     <TextView
         android:id="@+id/mafTextView"
-        android:layout_width="225dp"
+        android:layout_width="@dimen/standard_225"
+        android:maxWidth="@dimen/standard_250"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@null"
@@ -35,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:layout_margin="4dp"
-        android:gravity="center"
+        android:gravity="end"
         android:text="@null"
         android:textColor="@color/darkText"
         android:textSize="14sp"

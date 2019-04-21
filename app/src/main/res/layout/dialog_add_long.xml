@@ -34,11 +34,12 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:importantForAutofill="no"
         android:inputType="textMultiLine"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dal_title"
-        android:importantForAutofill="no"
         tools:ignore="LabelFor,UnusedAttribute" />
 
     <EditText
@@ -48,9 +49,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:importantForAutofill="no"
         android:ems="10"
+        android:importantForAutofill="no"
         android:inputType="textMultiLine"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dal_editText_title"
@@ -60,12 +62,14 @@
         android:id="@+id/dal_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="64dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="@android:string/ok"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dal_editText_content"
+        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
     <ImageButton
@@ -73,10 +77,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@android:string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dal_editText_content"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-        android:contentDescription="@android:string/cancel" />
+        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <TextView
+        android:id="@+id/dal_tv_list_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/list_title"
+        app:layout_constraintBottom_toBottomOf="@+id/dal_editText_title"
+        app:layout_constraintEnd_toStartOf="@+id/dal_editText_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dal_editText_title" />
+
+    <TextView
+        android:id="@+id/dal_tv_list_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/list_items"
+        app:layout_constraintBottom_toBottomOf="@+id/dal_editText_content"
+        app:layout_constraintEnd_toStartOf="@+id/dal_editText_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dal_editText_content" />
+
+    <ImageButton
+        android:id="@+id/dal_add_items_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="24dp"
+        android:tint="@color/colorPrimarySuperLight"
+        app:layout_constraintBottom_toBottomOf="@+id/dal_editText_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/dal_editText_content"
+        app:layout_constraintTop_toTopOf="@+id/dal_editText_content"
+        android:foregroundGravity="center"
+        app:srcCompat="@drawable/baseline_add_black_24"
+        android:contentDescription="@string/list_add_item" />
+
+    <LinearLayout
+        android:id="@+id/dal_layout_more_fragments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dal_editText_content">
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

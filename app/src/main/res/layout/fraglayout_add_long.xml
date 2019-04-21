@@ -20,11 +20,11 @@
         android:layout_weight="0.1"
         android:contentDescription="@string/expand"
         android:tint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_dialog_dialer" />
+        app:srcCompat="@drawable/baseline_format_list_numbered_black_36" />
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:minHeight="64dp"
         android:id="@+id/list_layout_for_title_and_content"
         android:orientation="vertical"
@@ -36,7 +36,9 @@
         <TextView
             android:id="@+id/titleLongTextView"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:gravity="center_vertical|start"
             android:maxLines="1"
@@ -48,8 +50,10 @@
             android:id="@+id/contentLongTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:maxWidth="@dimen/standard_250"
+            android:visibility="gone"
             android:gravity="start"
             android:text="TEST TEST TEST TEST TEST"
             tools:ignore="HardcodedText" />

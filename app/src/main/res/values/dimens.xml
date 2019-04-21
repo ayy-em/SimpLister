@@ -3,6 +3,7 @@
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="standard_55">55dp</dimen>
     <dimen name="standard_250">250dp</dimen>
+    <dimen name="standard_225">225dp</dimen>
     <dimen name="standard_105">105dp</dimen>
     <dimen name="standard_155">155dp</dimen>
     <dimen name="standard_205">205dp</dimen>

@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ft_add_simple.commit();
     }
 
-    private void addLongFragment(String title, String content) {
+    public void addLongFragment(String title, String content) {
         fragCount++;
         removeNothingIfItsPresent();
         now = new Date();
@@ -454,33 +454,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void LADinit() {
-        //show dialog with custom layout
-        AlertDialog.Builder xBuilder = new AlertDialog.Builder(MainActivity.this);
-        View xView = getLayoutInflater().inflate(R.layout.dialog_add_long,null);
-        final EditText dalTitle = xView.findViewById(R.id.dal_editText_title);
-        final EditText dalContent = xView.findViewById(R.id.dal_editText_content);
-        xBuilder.setView(xView);
-        final AlertDialog dialog = xBuilder.create();
+//        //show dialog with custom layout
+//        AlertDialog.Builder xBuilder = new AlertDialog.Builder(MainActivity.this);
+//        View xView = getLayoutInflater().inflate(R.layout.dialog_add_long,null);
+//        final EditText dalTitle = xView.findViewById(R.id.dal_editText_title);
+//        final EditText dalContent = xView.findViewById(R.id.dal_editText_content);
+//        xBuilder.setView(xView);
+//        final AlertDialog dialog = xBuilder.create();
+//
+//        //add more fragments with list items
+//        xView.findViewById(R.id.dal_add_items_button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentTransaction ft_add_more_items_to_list_dialog = getSupportFragmentManager().beginTransaction();
+//                ft_add_more_items_to_list_dialog.add(R.id.dal_layout_more_fragments,new LongMoreItemsFragment());
+//                ft_add_more_items_to_list_dialog.commit();
+//            }
+//        });
+//
+//        final EditText dalTitle = dialog.findViewById(R.id.dal_editText_title);
+//        final EditText dalContent = dialog.findViewById(R.id.dal_editText_content);
+//
+//        //----YES BUTTON----
+//        dialog.findViewById(R.id.dal_add).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //TODO: what happens if the field is empty
+//                MakeShortNoteAddedToast();
+//                dialog.dismiss();
+//                addLongFragment(dalTitle.getText().toString().trim(),dalContent.getText().toString().trim());
+//            }
+//        });
+//        //----NO BUTTON----
+//        dialog.findViewById(R.id.dal_cancel).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.findViewById(R.id.dal_add_items_button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentTransaction ft_dialog_add_list_more_items = getSupportFragmentManager().beginTransaction();
+//                ft_dialog_add_list_more_items.add(R.id.dal_layout_more_fragments,new LongMoreItemsFragment());
+//                ft_dialog_add_list_more_items.commit();
+//            }
+//        });
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        final DialogList dialog = new DialogList();
+        dialog.show(ft,"dialog_list");
 
-        //----YES BUTTON----
-        xView.findViewById(R.id.dal_add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: what happens if the field is empty
-                MakeShortNoteAddedToast();
-                dialog.dismiss();
-                addLongFragment(dalTitle.getText().toString().trim(),dalContent.getText().toString().trim());
-            }
-        });
-        //----NO BUTTON----
-        xView.findViewById(R.id.dal_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
     private void PADinit() {

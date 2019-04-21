@@ -99,26 +99,14 @@ public class LongAddFragment extends Fragment {
         //TODO: this
 
         //onclick to expand fragment to height
-        tvContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isExpanded) {
-                    ExpandCollapse.Collapse(thisView);
-                    isExpanded = false;
-                } else {
-                    ExpandCollapse.Expand(thisView);
-                    isExpanded = true;
-                }
-            }
-        });
         tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isExpanded) {
-                    ExpandCollapse.Collapse(thisView);
+                    ExpandCollapse.CollapseList(thisView,tvTitle,tvContent);
                     isExpanded = false;
                 } else {
-                    ExpandCollapse.Expand(thisView);
+                    ExpandCollapse.ExpandList(thisView,tvTitle,tvContent);
                     isExpanded = true;
                 }
             }

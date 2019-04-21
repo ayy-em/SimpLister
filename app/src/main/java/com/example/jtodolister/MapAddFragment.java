@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class MapAddFragment extends Fragment implements OnMapReadyCallback {
     private static final String mafMapKey = "MAF_MAP_KEY";
     private static final String mafMapLatKey = "MAF_MAP_LAT_KEY";
     private static final String mafMapLongKey = "MAF_MAP_LONG_KEY";
+    private Boolean isExpanded;
     private GoogleApiClient mGoogleApiClient;
     //TODO: add border to map fragment's map
 
@@ -53,7 +55,7 @@ public class MapAddFragment extends Fragment implements OnMapReadyCallback {
 
         SimpleDateFormat format = new SimpleDateFormat("dd.MM", Locale.US);
         String dateToStr = format.format(date);
-
+        fragment.isExpanded = false;
         //create a bundle with fragment text and number
         final Bundle params = new Bundle();
         params.putString(mafStringKey,text);
@@ -76,6 +78,7 @@ public class MapAddFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final Bundle params = getArguments();
+        final View thisView = this.getView();
 
         //map stuff
         mv = (MapView) view.findViewById(R.id.mafMap);
@@ -126,6 +129,24 @@ public class MapAddFragment extends Fragment implements OnMapReadyCallback {
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tv.getText().toString().trim());
                 startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)));
+            }
+        });
+
+        //expand/collapse if note is long
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    ExpandCollapse.CollapseMap(thisView,mv,tv);
+                    tv.setMaxLines(1);
+                    tv.setEllipsize(TextUtils.TruncateAt.END);
+                    isExpanded = false;
+                } else {
+                    tv.setMaxLines(Integer.MAX_VALUE);
+                    tv.setEllipsize(null);
+                    ExpandCollapse.ExpandMap(thisView,mv,tv);
+                    isExpanded = true;
+                }
             }
         });
 

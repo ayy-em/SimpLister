@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,12 @@ public class CalAddFragment extends Fragment {
     private TextView tvTimeStamp;
     private TextView tvDateGiven;
     private ImageButton shareButtonCalFrag;
+    private Boolean isExpanded;
 
 
     public static CalAddFragment newInstance(String text, String dateText, Date date, int fragNumber){
         CalAddFragment fragment = new CalAddFragment();
+        fragment.isExpanded = false;
         //bundle everything we need for fragment creation
         Bundle params = new Bundle();
         params.putString(fragTextKey,text);
@@ -51,6 +54,7 @@ public class CalAddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final View thisView = this.getView();
 
         //set text, timestamp, dateGiven to what it should be (arguments)
         Bundle params = getArguments();
@@ -72,6 +76,24 @@ public class CalAddFragment extends Fragment {
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subjectDate);
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, tvText.getText().toString().trim());
                 startActivity(Intent.createChooser(sharingIntent,getString(R.string.share)));
+            }
+        });
+
+        //expand onclick
+        tvText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    ExpandCollapse.Collapse(thisView);
+                    tvText.setMaxLines(1);
+                    tvText.setEllipsize(TextUtils.TruncateAt.END);
+                    isExpanded = false;
+                } else {
+                    tvText.setMaxLines(Integer.MAX_VALUE);
+                    tvText.setEllipsize(null);
+                    ExpandCollapse.Expand(thisView);
+                    isExpanded = true;
+                }
             }
         });
 
