@@ -1,47 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/frag_dal_layout">
+    android:id="@+id/frag_dal_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clickable="false"
+    android:focusable="true"
+    android:minWidth="100dp"
+    android:orientation="horizontal">
 
     <EditText
         android:id="@+id/frag_dal_editText_item"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="2dp"
+        android:background="#00184ADF"
+        android:backgroundTint="#F8E291"
+        android:ellipsize="end"
         android:ems="10"
         android:importantForAutofill="no"
+        android:inputType="textNoSuggestions"
         android:maxLines="1"
-        android:ellipsize="end"
-        android:inputType="textMultiLine"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="LabelFor,TextViewEdits,UnusedAttribute" />
 
     <ImageButton
         android:id="@+id/frag_dal_add_items_button_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="2dp"
         android:contentDescription="@string/list_add_item"
-        android:foregroundGravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/frag_dal_editText_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/frag_dal_editText_item"
-        app:layout_constraintTop_toTopOf="@+id/frag_dal_editText_item"
         app:srcCompat="@drawable/baseline_add_black_24" />
 
 
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

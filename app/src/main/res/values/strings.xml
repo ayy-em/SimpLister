@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">SimpLister</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="fab_add">Note</string>
+    <string name="test_hint1">Call James today</string>
+    <string name="test_hint2">File taxes tomorrow</string>
+    <string name="test_hint3">Check the attic for monsters</string>
+    <string name="test_hint4">Check price online</string>
+    <string name="test_hint5">Carrots</string>
+    <string name="test_hint6">Check out this store</string>
+    <string name="test_hint7">Hair salon on Friday</string>
+    <string name="test_hint_title_1">Groceries</string>
     <string name="fab_add_long">Long Note</string>
     <string name="fab_add_pic">Image Note</string>
     <string name="fab_add_loc">Location Note</string>
@@ -26,8 +36,8 @@
     <string name="addLocDialTitle">Add a location note</string>
     <string name="addCalTitle">Add a calendar note</string>
     <string name="no_date_set">No date set</string>
-    <string name="list_title">List name:</string>
-    <string name="list_items">List items:</string>
+    <string name="list_title">Title:</string>
+    <string name="list_items">Items:</string>
     <string name="list_add_item">Add item</string>
     <string name="selectPic">Choose an image for your note</string>
     <string name="description_zoom_touch_close">Touch to close the big view</string>

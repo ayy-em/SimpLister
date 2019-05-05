@@ -9,7 +9,6 @@
     android:paddingBottom="5dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/layout_rounded_corners"
     android:id="@+id/dal">
 
     <TextView
@@ -21,7 +20,8 @@
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/addLongDialTitle"
-        android:textSize="18sp"
+        android:textColor="@color/darkText"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +34,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:hint="@string/test_hint_title_1"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:textSize="14sp"
@@ -50,6 +51,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:hint="@string/test_hint5"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:textSize="14sp"
@@ -58,33 +60,37 @@
         app:layout_constraintTop_toBottomOf="@+id/dal_editText_title"
         tools:ignore="LabelFor,TextViewEdits,UnusedAttribute" />
 
-    <ImageButton
+    <Button
         android:id="@+id/dal_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/layout_rounded_corners"
         android:contentDescription="@android:string/ok"
+        android:text="@string/ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments" />
 
-    <ImageButton
+    <Button
         android:id="@+id/dal_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/layout_rounded_corners"
         android:contentDescription="@android:string/cancel"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments" />
 
     <TextView
         android:id="@+id/dal_tv_list_name"
@@ -93,6 +99,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/list_title"
+        android:textColor="@color/darkText"
         app:layout_constraintBottom_toBottomOf="@+id/dal_editText_title"
         app:layout_constraintEnd_toStartOf="@+id/dal_editText_title"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +112,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/list_items"
+        android:textColor="@color/darkText"
         app:layout_constraintBottom_toBottomOf="@+id/dal_editText_content"
         app:layout_constraintEnd_toStartOf="@+id/dal_editText_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,24 +122,27 @@
         android:id="@+id/dal_add_items_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="24dp"
-        android:tint="@color/colorPrimarySuperLight"
+        android:background="@drawable/layout_rounded_corners_for_imagebuttons"
+        android:contentDescription="@string/list_add_item"
+        android:foregroundGravity="center"
+        android:tint="@color/darkText"
         app:layout_constraintBottom_toBottomOf="@+id/dal_editText_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/dal_editText_content"
         app:layout_constraintTop_toTopOf="@+id/dal_editText_content"
-        android:foregroundGravity="center"
-        app:srcCompat="@drawable/baseline_add_black_24"
-        android:contentDescription="@string/list_add_item" />
+        app:srcCompat="@drawable/baseline_add_black_24" />
 
     <LinearLayout
         android:id="@+id/dal_layout_more_fragments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:minHeight="8dp"
         android:orientation="vertical"
+        android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dal_editText_content">

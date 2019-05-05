@@ -12,11 +12,14 @@ import android.widget.ImageButton;
 
 public class LongMoreItemsFragment extends Fragment {
 
+    public LongMoreItemsFragment() {
+        //i dunno, maybe when it's empty it's ok
+        //edit: it doesn't
+    }
 
     public static LongMoreItemsFragment newInstance() {
-        final LongMoreItemsFragment fragment = new LongMoreItemsFragment();
 
-        return fragment;
+        return new LongMoreItemsFragment();
     }
 
     @Nullable
@@ -30,5 +33,12 @@ public class LongMoreItemsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ImageButton addBtn = view.findViewById(R.id.frag_dal_add_items_button_more);
         EditText newItmFragDialog = view.findViewById(R.id.frag_dal_editText_item);
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.MakeShortToast(getContext(),"heyaaaa");
+            }
+        });
     }
 }

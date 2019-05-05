@@ -7,6 +7,7 @@
     <color name="colorAccent">#28B463</color>
     <color name="darkText">#273746</color>
     <color name="defaultText">#808080</color>
+    <color name="light_default">#D6DBDF</color>
     <color name="fragmentBackground">#EAECEE</color>
     <color name="fragmentBackgroundBorder">#F2F1F2</color>
 </resources>

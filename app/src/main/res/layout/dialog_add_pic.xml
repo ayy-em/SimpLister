@@ -21,7 +21,8 @@
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/addPicDialTitle"
-        android:textSize="18sp"
+        android:textColor="@color/darkText"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,40 +31,51 @@
         android:id="@+id/dap_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="54dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:hint="@string/test_hint4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dap_pic_upload"
         app:layout_constraintTop_toBottomOf="@+id/dap_title"
         tools:ignore="LabelFor,UnusedAttribute" />
 
-    <ImageButton
+    <Button
         android:id="@+id/dap_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/layout_rounded_corners"
         android:contentDescription="@android:string/ok"
+        android:text="@string/ok"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dap_editText"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:layout_constraintTop_toBottomOf="@+id/dap_pic_upload" />
 
-    <ImageButton
+    <Button
         android:id="@+id/dap_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/layout_rounded_corners"
+        android:contentDescription="@android:string/cancel"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dap_editText"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-        android:contentDescription="@android:string/cancel" />
+        app:layout_constraintTop_toBottomOf="@+id/dap_pic_upload" />
 
     <ImageButton
         android:id="@+id/dap_pic_upload"
@@ -71,13 +83,9 @@
         android:layout_height="96dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@null"
+        android:background="@drawable/layout_rounded_corners_for_imagebuttons"
         android:contentDescription="@string/uploadPic"
         android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/dap_add"
-        app:layout_constraintEnd_toStartOf="@+id/dap_editText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dap_title"
         app:srcCompat="@drawable/baseline_image_black_36" />

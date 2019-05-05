@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="5dp"
-    android:paddingRight="5dp"
-    android:paddingLeft="5dp"
-    android:paddingBottom="5dp"
+    android:id="@+id/das"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/layout_rounded_corners"
-    android:id="@+id/das">
+    android:paddingLeft="5dp"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/das_title"
@@ -21,7 +19,8 @@
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/addSimpDialTitle"
-        android:textSize="18sp"
+        android:textColor="@color/darkText"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,35 +32,45 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
+        android:padding="8dp"
         android:ems="10"
+        android:importantForAutofill="no"
         android:inputType="textMultiLine"
+        android:hint="@string/test_hint1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/das_title"
-        android:importantForAutofill="no"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="LabelFor,UnusedAttribute" />
 
-    <ImageButton
+    <Button
         android:id="@+id/das_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/layout_rounded_corners"
         android:contentDescription="@android:string/ok"
+        android:text="@string/ok"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/das_editText"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:layout_constraintTop_toBottomOf="@+id/das_editText" />
 
-    <ImageButton
+    <Button
         android:id="@+id/das_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/layout_rounded_corners"
+        android:contentDescription="@android:string/cancel"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/das_editText"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-        android:contentDescription="@android:string/cancel" />
+        app:layout_constraintTop_toBottomOf="@+id/das_editText" />
 </android.support.constraint.ConstraintLayout>
