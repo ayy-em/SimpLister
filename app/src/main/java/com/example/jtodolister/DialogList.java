@@ -12,11 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class DialogList extends DialogFragment {
 
     //TODO: add more items button
+    String[] items = {"test","test_1","test_2"};
 
 
     public static DialogList newInstance() {
@@ -33,10 +36,9 @@ public class DialogList extends DialogFragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        final View thisView = getView();
-        final EditText dalTitle = view.findViewById(R.id.dal_editText_title);
-        final EditText dalContent = view.findViewById(R.id.dal_editText_content);
+        ListView list = (ListView) view.findViewById(R.id.dal_list);
+        SpecialAdapter adapter = new SpecialAdapter(getActivity(),items);
+        list.setAdapter(adapter);
 
         //----YES BUTTON----
         view.findViewById(R.id.dal_add).setOnClickListener(new View.OnClickListener() {
@@ -70,6 +72,10 @@ public class DialogList extends DialogFragment {
                 ft_dialog_add_list_more_items.commit();
             }
         });
+    }
+
+    static class ViewHolder {
+        TextView text;
     }
 
     @Nullable

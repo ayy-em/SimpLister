@@ -74,7 +74,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments" />
+        app:layout_constraintTop_toBottomOf="@+id/dal_list" />
 
     <Button
         android:id="@+id/dal_cancel"
@@ -90,7 +90,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dal_layout_more_fragments" />
+        app:layout_constraintTop_toBottomOf="@+id/dal_list" />
 
     <TextView
         android:id="@+id/dal_tv_list_name"
@@ -135,17 +135,16 @@
         app:layout_constraintTop_toTopOf="@+id/dal_editText_content"
         app:srcCompat="@drawable/baseline_add_black_24" />
 
-    <LinearLayout
-        android:id="@+id/dal_layout_more_fragments"
+    <ListView
+        android:id="@+id/dal_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:maxHeight="124dp"
         android:minHeight="8dp"
         android:orientation="vertical"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dal_editText_content">
+        app:layout_constraintTop_toBottomOf="@+id/dal_editText_content"
+        tools:layout_editor_absoluteX="21dp">
 
-    </LinearLayout>
+    </ListView>
 </android.support.constraint.ConstraintLayout>
